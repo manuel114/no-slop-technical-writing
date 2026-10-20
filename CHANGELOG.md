@@ -9,6 +9,32 @@ latest entry.
 
 ### Added
 
+- About 30 more patterns in `references/avoid.md`: stacked rhetorical questions, stranded contrasts,
+  missing bridges, hollow intensifiers, template phrases, transition fillers, vague endorsements,
+  "despite challenges" formulas, moral adjectives on things, analogy stacking, walls of text,
+  uniform paragraph length, unnecessary hyphens, label full stops, synonym cycling, unexplained
+  names and terms (which replaces the narrower "undefined jargon"), and a section on social and chat
+  copy (hooks, launch openers, fake-casual register, reaction framing, engagement closers, hashtags,
+  sycophancy, recap-flattery openers).
+- A three-tier word list: tier 1 flagged every time, tier 2 when two or more share a paragraph,
+  tier 3 only in bulk. About 100 words in all.
+- **Keep:** notes on the noisiest rules, giving a case where the same words are fine.
+- `--context technical|marketing|social|casual` sets how strict the check script is; the
+  tolerance table is in `references/review.md`.
+- The check script lists every short code and ID (DEV-6, E1, APP-123) at its first use, to check
+  each is explained.
+- An editing contract in `SKILL.md` for cleaning up someone else's draft.
+- A labelled corpus in `tests/corpus/` (machine-like and human samples, each with its context) and
+  `scripts/eval.mjs`, which scores the check script against it; `npm run eval`.
+
+### Fixed
+
+<!-- check:off -->
+
+- "It is not X; it is Y" is now caught as a reversal, like "it's not X, it's Y".
+
+<!-- check:on -->
+
 - `references/charts.md` says which form the evidence for each kind of finding takes: a chart for
   a comparison or a change over time in collected data, a table for reference data, prose for a
   worked calculation or a forecast, quotes for interviews, a diagram for structure. The rule is

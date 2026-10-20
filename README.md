@@ -97,6 +97,7 @@ Options:
 | `--strict` | Exit with code 1 at three or more hits, for CI |
 | `--max-bold N` | Allow up to N bold phrases in prose (default 3; bold that labels a list item doesn't count) |
 | `--allow-em-dash` | Don't flag em dashes, where house style allows them |
+| `--context NAME` | How strict to be: `technical` (default), `marketing`, `social` or `casual`; the table is in [references/review.md](references/review.md) |
 
 Quoted bad examples, such as a style guide's, can be left out by wrapping them in
 `<!-- check:off -->` and `<!-- check:on -->`. Code, front matter, tables and URLs are skipped
@@ -173,9 +174,10 @@ rates and the range they could plausibly fall in.
 | [references/charts.md](references/charts.md) | When a finding gets a chart, and how to draw it |
 | [references/review.md](references/review.md) | The review pass |
 | [scripts/check.mjs](scripts/check.mjs) | The check script |
+| [scripts/eval.mjs](scripts/eval.mjs) | Scores the check script against the labelled corpus |
 | [templates/page.html](templates/page.html) | The HTML page shell |
 | [examples/](examples/) | The before and after samples |
-| [tests/](tests/) | Tests for the check script |
+| [tests/](tests/) | Tests for the check script, and the labelled corpus in `tests/corpus/` |
 | [docs/](docs/) | The demo GIF and the script that renders it |
 
 ## Tests
@@ -189,8 +191,13 @@ node --test
 Each rule has a case that must fire it and a near miss that must not. Further cases cover the
 places a check script can misfire: tables, lists, URLs, code, front matter, decimals,
 `check:off` regions, and statistics terms such as "true recall" or "the real rate". The suite
-also runs the check script on every Markdown file in this repository, except the sloppy example, and
-fails if any is not Clean. CI runs it on Node.js 22 and 24.
+also runs the check script on every Markdown file in this repository, except the sloppy example and
+the corpus, and fails if any is not Clean. CI runs it on Node.js 22 and 24.
+
+`tests/corpus/` holds short samples labelled `machine` or `human`, each with the context it was
+written for. `npm run eval` runs the check script on each and reports how many machine samples get a
+Rewrite verdict and how many human samples don't; the test suite fails if any sample is judged
+against its label. Add a sample whenever the script misses something or flags good writing.
 
 ## House style
 

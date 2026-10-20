@@ -20,7 +20,32 @@ node <skill folder>/scripts/check.mjs file.md --json --strict
 ```
 
 Options: `--max-bold N` (default 3; bold that labels a list item doesn't count), `--allow-em-dash` where house style permits them, `--json`
-for a machine-readable report, and `--strict` to exit 1 at three or more hits (for CI).
+for a machine-readable report, `--strict` to exit 1 at three or more hits (for CI), and
+`--context` to set how strict to be.
+
+### How strict, by context
+
+Technical writing is held to every rule. Other kinds of writing get a little room on the rules where
+some use is normal for the form. The numbers are how many hits of that rule pass before any count.
+
+| Rule | technical (default) | marketing | social | casual |
+| --- | --- | --- | --- | --- |
+| "Let's" constructions | 0 | 1 | 1 | 2 |
+| Rhetorical questions | 0 | 1 | 1 | 1 |
+| Stacked rhetorical questions | 0 | 1 | 0 | 0 |
+| Staccato runs | 0 | 0 | 1 | 1 |
+| Mic-drop endings | 0 | 0 | 1 | 1 |
+| Emoji | 0 | 0 | 2 | 1 |
+| Fake-casual register | 0 | 0 | 0 | 2 |
+| Narrated candour | 0 | 0 | 0 | 1 |
+| Launch-copy openers | 0 | 0 | 1 | 0 |
+| Bold | max-bold | max-bold | off | max-bold |
+| Hashtags | flagged | flagged | off | flagged |
+| Walls of text | flagged | flagged | off | flagged |
+| Uniform paragraph length | flagged | off | off | off |
+
+Every other rule applies the same way in every context. The table is `TOLERANCE` in
+[`scripts/check.mjs`](../scripts/check.mjs); change it there and here together.
 
 It prints each hit with its line, a verdict (Clean / Review the hits / Rewrite), and a separate
 list of ", not …" phrases to read by hand. Aim for Clean. Fix every hit you can't justify, and say
