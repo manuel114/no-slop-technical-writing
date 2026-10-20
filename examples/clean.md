@@ -1,43 +1,40 @@
-# A dependency cache cut mean CI build time from 9.1 to 5.8 minutes
+# Prompt caching cut the cost of a support assistant's requests by 58%
 
-A dependency cache made the average CI build 3.3 minutes shorter over 30 days: 5.8 minutes
-across 412 builds with the cache, against 9.1 minutes across 398 builds in the 30 days before.
-That is 22.8 hours of runner time a month, about $11 at $0.008 a runner-minute. The cache pays
-for itself whenever more than 11% of builds find it warm; this trial saw 87%.
+A support assistant sends the same 6,000-token instructions with every request. Prompt caching
+(the provider keeps that repeated part and charges a tenth of the normal price to reuse it)
+brought the average request from 2.5 cents to 1.0 cent over 30 days, or from $1,026 to $427 for
+the month. **Caching saves money as long as more than 22% of requests find the cache warm; here
+92% did.**
 
-This page rests on one repository's build logs for 60 days and one runner price. The repository
-is made up for this example; every other number on the page is computed from the table below.
+This page rests on one month of logs from one assistant: 41,200 requests. The assistant is made up
+for this example, and every other number on the page is computed from the table below.
 
-## What was measured
+## What a request costs
 
-Each build either finds the cache (a hit: dependencies are restored from the last build) or
-misses it (a miss: dependencies are downloaded, then saved for the next build). We logged the wall
-time of every build on the main branch and whether it hit.
-
-| | Builds | Mean build time |
+| Part of the request | Tokens | Price per million tokens |
 | --- | --- | --- |
-| Before the cache | 398 | 9.1 min |
-| With the cache, hit | 358 | 5.2 min |
-| With the cache, miss | 54 | 9.6 min |
-| With the cache, all | 412 | 5.8 min |
+| Instructions, sent normally | 6,000 | $3.00 |
+| Instructions, stored in the cache | 6,000 | $3.75 |
+| Instructions, read from the cache | 6,000 | $0.30 |
+| Conversation so far | 800 | $3.00 |
+| Answer | 300 | $15.00 |
 
-A hit saves 3.9 minutes against the old build. A miss costs 0.5 minutes more than the old build,
-because it also uploads the new cache.
+Without caching, a request costs 2.49 cents. When the cache is warm (a hit), the instructions are
+read from it and the request costs 0.87 cents. When it is cold (a miss), the instructions are sent
+and stored, which costs 25% more than sending them, so the request costs 2.94 cents. With 92% hits
+the average request cost 1.04 cents.
 
-## When the cache stops paying
+## When caching stops paying
 
-The cache helps on average as long as the hit rate (the share of builds that find the cache warm)
-is above 11.4%. Below that, the extra 0.5 minutes on each miss outweighs the 3.9 minutes saved on
-each hit. The break-even rate is 0.5 / (9.6 − 5.2), the cost of a miss over the gap between a
-miss and a hit.
+A hit saves 1.62 cents and a miss costs 0.45 cents extra, both against no caching. Caching comes
+out ahead when the hit rate is above 0.45 / (0.45 + 1.62), which is 21.7%.
 
-A build misses when the lockfile changes, so the hit rate depends on how often dependencies
-change. In this trial 54 of 412 builds changed the lockfile. A month where every build missed is
-the ceiling on the cost: 206 extra minutes, or $1.65. A week of daily dependency upgrades would
-move the rate towards that ceiling for that week.
+The hit rate depends on traffic. The cache empties after 5 minutes without a request, so quiet
+hours have more misses than busy ones. The ceiling on the cost is a month in which every request
+misses: 18% more than not caching.
 
 ## Methods
 
-Build times are wall-clock times from the CI provider's logs, main branch only, with failed builds
-removed. The mean is the plain average. The price is the list price for a two-core Linux runner
-on the date of the trial and does not include cache storage.
+Costs are computed from the token counts in the logs and the prices in the table, leaving out
+failed requests. The prices are illustrative, close to list prices for a mid-size model in October
+2026.
