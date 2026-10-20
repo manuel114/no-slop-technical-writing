@@ -10,9 +10,13 @@ It gives the agent:
   worst cases as ceilings.
 - **Chart rules** ([references/charts.md](references/charts.md)): titles that state the finding,
   captions that say how to read the chart, one effect per chart.
-- **A review pass** ([references/review.md](references/review.md)): the
-  [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) detector for word-level
-  tells, then an adversarial read for cadence and claims with no source.
+- **Patterns to avoid** ([references/avoid.md](references/avoid.md)): sentence shapes, words,
+  formatting and substance problems that make writing read as machine-made, each with the fix.
+- **Patterns to replicate** ([references/replicate.md](references/replicate.md)): how a data-led
+  research note opens, structures sections, introduces charts and uses numbers.
+- **A review pass** ([references/review.md](references/review.md)): a dependency-free check script
+  ([scripts/check.mjs](scripts/check.mjs)) for the mechanical patterns, then an adversarial read
+  for the rest.
 - **A page shell** ([templates/page.html](templates/page.html)): a single-file HTML research note
   with light and dark themes, line and bar chart helpers with tooltips and data tables, and
   binomial statistics helpers (Clopper–Pearson bounds, pass chances, normal-approximation ranges).
@@ -23,17 +27,12 @@ Copy this folder into your agent's skills directory, for example `~/.claude/skil
 for Claude Code, or `.claude/skills/technical-writing` in a repository. It follows the
 [Agent Skills](https://agentskills.io) `SKILL.md` format.
 
-The review pass needs Node.js to run the detector; everything else is plain Markdown and HTML.
+The check script needs Node.js 22 or later; everything else is plain Markdown and HTML. Nothing is downloaded.
 
 ## House style
 
 The rules are defaults. A project can layer its own on top (banned punctuation, terms, content-type
 gates) with a small skill of its own that loads this one first.
-
-## Credits
-
-The review pass runs [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) by
-Conor Bronsdon (MIT) as a dependency; it is not copied here.
 
 ## License
 

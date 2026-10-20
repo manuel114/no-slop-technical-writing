@@ -1,9 +1,9 @@
 ---
 name: technical-writing
-description: Write technical content (how a system or method works, the maths behind a decision, a measurement write-up, a design note, a methods page) that is plain, exact and free of AI slop, and review it adversarially before it ships. Covers structure, voice, terms, numbers, charts, an optional HTML page shell with chart and statistics helpers, and the review pass (the avoid-ai-writing detector plus an adversarial read). Use when asked for a technical write-up, an explainer, a methods page, a doc that explains numbers, or to de-slop technical prose.
+description: Write technical content (how a system or method works, the maths behind a decision, a measurement write-up, a design note, a methods page) that is plain, exact and free of AI slop, and review it adversarially before it ships. Covers structure, voice, terms, numbers, charts, an optional HTML page shell with chart and statistics helpers, a catalogue of patterns to avoid and patterns to replicate, and a self-contained review pass (a check script plus an adversarial read). Use when asked for a technical write-up, an explainer, a methods page, a doc that explains numbers, or to de-slop technical prose.
 version: 0.1.0
 license: MIT
-compatibility: Any AI coding assistant that supports the agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, OpenHands, etc.) or OpenClaw. The review pass needs Node.js to run the avoid-ai-writing detector; everything else is plain Markdown and HTML.
+compatibility: Any AI coding assistant that supports the agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, OpenHands, etc.) or OpenClaw. The check script needs Node.js 22 or later; everything else is plain Markdown and HTML.
 metadata:
   author: Manuel (manuel114)
   repository: https://github.com/manuel114/technical-writing
@@ -20,9 +20,17 @@ check. The model is a research note: a clear claim up front, evidence that each 
 finding, and flat sentences between them. The rules apply to any format: a docs page, a design
 doc, a PR description, a standalone HTML page.
 
-Before writing charts, read [references/charts.md](references/charts.md). Before calling a piece
-finished, run the review in [references/review.md](references/review.md). For a standalone HTML
-page, start from [templates/page.html](templates/page.html).
+Read these before writing:
+
+- [references/replicate.md](references/replicate.md): the research-note patterns to copy (opening,
+  sections, charts, numbers, tone).
+- [references/avoid.md](references/avoid.md): the patterns that make writing read as
+  machine-made, each with an example and the fix.
+- [references/charts.md](references/charts.md): the chart rules.
+
+Before calling a piece finished, run the review in [references/review.md](references/review.md),
+which uses [scripts/check.mjs](scripts/check.mjs). For a standalone HTML page, start from
+[templates/page.html](templates/page.html).
 
 ## Structure
 
