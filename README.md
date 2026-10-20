@@ -163,6 +163,8 @@ statistics helpers.
 
 ## Tests
 
+Run them from the skill's own folder:
+
 ```bash
 node --test
 ```

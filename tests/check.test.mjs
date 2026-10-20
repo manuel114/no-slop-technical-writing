@@ -205,3 +205,29 @@ describe("this repository follows its own rules", () => {
     assert.ok(analyse(readFileSync(join(root, "examples", "sloppy.md"), "utf8")).hits.length >= 3);
   });
 });
+
+describe("review fixes", () => {
+  test("curly apostrophes match like straight ones", () => {
+    assert.ok(rules("Let’s dive in.").has("lets"));
+    assert.ok(rules("It’s not a caching problem, it’s a timeout.").has("reversal"));
+  });
+  test("em dashes and bold inside a Markdown table are skipped", () => {
+    const md = "| Option | Note |\n| --- | --- |\n| A | fast — cheap |\n| **B** | **C** **D** **E** |\n";
+    const r = rules(md);
+    assert.ok(!r.has("em-dash"));
+    assert.ok(!r.has("bold"));
+  });
+  test("HTML tables are skipped", () => {
+    assert.ok(!rules("<table><tr><td>blazing-fast</td></tr></table><p>The run took 4 minutes.</p>", { html: true }).has("hype"));
+  });
+  test("line numbers survive front matter, fenced code and check:off regions", () => {
+    const md = "---\ntitle: x\n---\n\n```\na\nb\n```\n\n<!-- check:off -->\nskip\n<!-- check:on -->\n\nLet's dive in.\n";
+    const hit = analyse(md).hits.find((h) => h.rule === "lets");
+    assert.equal(hit.line, 14);
+  });
+  test("HTML hits point to the source line", () => {
+    const html = "<article>\n  <h2>Setup</h2>\n  <p>The run took 4 minutes.</p>\n  <p>Here, the cache is\n    <strong>blazing-fast</strong> on reads.</p>\n</article>\n";
+    const hit = analyse(html, { html: true }).hits.find((h) => h.rule === "hype");
+    assert.equal(hit.line, 5);
+  });
+});

@@ -10,10 +10,13 @@ alone is enough.
 [avoid.md](avoid.md). It has no dependencies and reads Markdown or HTML (for HTML it drops styles,
 scripts and code, and keeps headings and bold).
 
+Run it from wherever the draft is, pointing at the script inside the installed skill (for example
+`.claude/skills/no-slop-technical-writing` in a repository, or `~/.claude/skills/no-slop-technical-writing`):
+
 ```bash
-node scripts/check.mjs file.md
-node scripts/check.mjs page.html --max-bold 3
-node scripts/check.mjs file.md --json --strict
+node <skill folder>/scripts/check.mjs file.md
+node <skill folder>/scripts/check.mjs page.html --max-bold 3
+node <skill folder>/scripts/check.mjs file.md --json --strict
 ```
 
 Options: `--max-bold N` (default 3; bold that labels a list item doesn't count), `--allow-em-dash` where house style permits them, `--json`
