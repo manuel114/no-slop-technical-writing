@@ -1,0 +1,213 @@
+<title>{{Short page name}}</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a long-form research note. One reading column, charts at column width, each with a title, a one-line subtitle and a source line. */
+:root {
+  --bg: #ffffff;
+  --surface: #f6f7f8;
+  --ink: #111417;
+  --ink-2: #4a5057;
+  --ink-3: #6f767e;
+  --rule: #e2e5e8;
+  --grid: #eceef0;
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --s3: #1baf7a;
+  --neutral-bar: #c4c9ce;
+  --shade-bad: rgba(227, 73, 72, 0.07);
+  --shade-good: rgba(42, 120, 214, 0.06);
+  --display: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121416; --surface: #1a1d20; --ink: #eef0f2; --ink-2: #b9bfc6; --ink-3: #8d949b;
+    --rule: #2a2f34; --grid: #23272b; --s1: #3987e5; --s2: #d95926; --s3: #199e70; --neutral-bar: #4a5158;
+    --shade-bad: rgba(230, 103, 103, 0.10); --shade-good: rgba(57, 135, 229, 0.10); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121416; --surface: #1a1d20; --ink: #eef0f2; --ink-2: #b9bfc6; --ink-3: #8d949b;
+  --rule: #2a2f34; --grid: #23272b; --s1: #3987e5; --s2: #d95926; --s3: #199e70; --neutral-bar: #4a5158;
+  --shade-bad: rgba(230, 103, 103, 0.10); --shade-good: rgba(57, 135, 229, 0.10); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 18px; line-height: 1.6; }
+article { max-width: 720px; margin: 0 auto; padding-block: 48px 72px; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.kicker { font: 600 13px var(--display); letter-spacing: 0.08em; text-transform: uppercase; color: var(--s1); margin: 0 0 12px; }
+h1 { font: 700 clamp(34px, 6vw, 50px)/1.08 var(--display); letter-spacing: -0.02em; margin: 0 0 20px; text-wrap: balance; }
+.dek { font-size: 21px; line-height: 1.5; color: var(--ink-2); margin: 0 0 28px; }
+.byline { font: 500 14px var(--display); color: var(--ink-3); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 10px 0; margin-bottom: 36px; }
+h2 { font: 700 27px/1.2 var(--display); letter-spacing: -0.01em; margin: 56px 0 14px; text-wrap: balance; }
+h3 { font: 600 19px/1.3 var(--display); margin: 32px 0 6px; }
+p { margin: 0 0 18px; }
+strong { font-weight: 600; }
+a { color: var(--s1); text-underline-offset: 2px; }
+.term { font-style: italic; }
+figure { margin: 34px 0 34px; }
+.fig-title { font: 600 15px/1.35 var(--display); margin: 0; }
+.fig-sub { font: 500 14px/1.45 var(--display); color: var(--ink-2); margin: 4px 0 12px; }
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart text { font-family: var(--display); font-size: 12px; fill: var(--ink-3); }
+.chart .lab { fill: var(--ink); font-weight: 600; }
+.chart .axis { stroke: var(--rule); }
+.chart .grid { stroke: var(--grid); }
+.chart .ref { stroke: var(--ink-3); stroke-dasharray: 4 4; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font: 500 13px var(--display); color: var(--ink-2); margin: 2px 0 8px; }
+.legend span::before { content: ""; display: inline-block; width: 14px; height: 3px; border-radius: 2px; background: var(--c); vertical-align: middle; margin-right: 6px; }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); font: 500 12.5px/1.45 var(--display); padding: 7px 10px; border-radius: 6px; white-space: nowrap; transform: translate(-50%, calc(-100% - 12px)); opacity: 0; transition: opacity 80ms; }
+.tip.on { opacity: 1; }
+.tip b { font-weight: 700; }
+figcaption { font: 500 12.5px/1.5 var(--display); color: var(--ink-3); margin-top: 10px; }
+details.data { margin-top: 8px; font: 500 13px var(--display); color: var(--ink-2); }
+details.data summary { cursor: pointer; color: var(--ink-3); }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; font: 500 13.5px var(--display); margin-top: 8px; min-width: 100%; }
+th, td { text-align: left; padding: 6px 14px 6px 0; border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; white-space: nowrap; }
+th { color: var(--ink-3); font-weight: 600; }
+.flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 6px 0 0; }
+@media (max-width: 620px) { .flow { grid-template-columns: minmax(0, 1fr); } }
+.step { background: var(--surface); border-radius: 8px; padding: 12px; font: 500 13.5px/1.4 var(--display); color: var(--ink-2); position: relative; min-width: 0; }
+.step .num { display: block; font: 700 12px var(--mono); color: var(--s1); margin-bottom: 4px; letter-spacing: 0.02em; }
+.step .sn { color: var(--ink); font-weight: 700; display: block; margin-bottom: 2px; }
+.formula { font: 500 15px var(--mono); background: var(--surface); border-radius: 8px; padding: 12px 14px; overflow-x: auto; margin: 0 0 18px; }
+.corner-lead { font-weight: 600; }
+.end { border-top: 1px solid var(--rule); margin-top: 56px; padding-top: 18px; font: 500 13px/1.6 var(--display); color: var(--ink-3); }
+@media (prefers-reduced-motion: reduce) { .tip { transition: none; } }
+</style>
+
+<article>
+  <p class="kicker">{{Series name}} · Part {{N}} of {{M}}</p>
+  <h1>{{What this page proves or explains}}</h1>
+  <p class="dek">{{One or two sentences: the claim, and that it has limits.}}</p>
+  <div class="byline">{{Author or team}} · {{what the page covers}}</div>
+
+  <p>{{Name the thing and why it matters.}}</p>
+  <p>{{Name the terms the page uses, each with a plain explanation: <span class="term">term</span> (what it means).}}</p>
+  <p><strong>{{The thesis: one sentence with the exact rule and its numbers.}}</strong> {{One sentence on what the rest of the page covers.}}</p>
+
+  <h2>{{How it works}}</h2>
+  <p>{{Setup: what happens, in order. A process gets the step diagram below, not a chart.}}</p>
+  <figure>
+    <p class="fig-title">{{Name of the process}}</p>
+    <p class="fig-sub">{{One line on who does what}}</p>
+    <div class="flow">
+      <div class="step"><span class="num">1</span><span class="sn">{{Step}}</span>{{What happens}}</div>
+      <div class="step"><span class="num">2</span><span class="sn">{{Step}}</span>{{What happens}}</div>
+      <div class="step"><span class="num">3</span><span class="sn">{{Step}}</span>{{What happens}}</div>
+      <div class="step"><span class="num">4</span><span class="sn">{{Step}}</span>{{What happens}}</div>
+      <div class="step"><span class="num">5</span><span class="sn">{{Step}}</span>{{What happens}}</div>
+    </div>
+    <figcaption>Process: {{source doc and section}}.</figcaption>
+  </figure>
+
+  <h2>{{A section with evidence}}</h2>
+  <p>{{Setup: the question this chart answers.}}</p>
+  <figure>
+    <p class="fig-title">{{The finding, in plain words}}</p>
+    <p class="fig-sub">{{What is measured, by what}}</p>
+    <div class="legend"><span style="--c: var(--s1)">{{series 1}}</span><span style="--c: var(--s2)">{{series 2}}</span></div>
+    <div class="chart" id="c1"></div>
+    <details class="data"><summary>Show the numbers</summary><div class="tbl" id="c1t"></div></details>
+    <figcaption>{{How to read it first; the formula or source last.}}</figcaption>
+  </figure>
+  <p><strong>{{The finding in one sentence, with the numbers.}}</strong> {{What it means for us.}}</p>
+
+  <h2>Where we cut corners on purpose</h2>
+  <p>{{One sentence: each shortcut makes the work cheaper or faster; below, each covers what it risks and what limits the damage.}}</p>
+  <h3>{{The shortcut, named plainly}}</h3>
+  <p>{{What we do. What it risks, with a number. Why we accept it, with a number. What limits the damage.}}</p>
+
+  <div class="end">Methods: {{methods by name}}. Numbers assume {{assumptions}}. Part of a series: {{the parts, this one marked}}.</div>
+</article>
+
+<script>
+const $ = (id) => document.getElementById(id);
+/** Log-factorials, grown on demand, for exact binomial sums. */
+const LF = [0];
+const lf = (n) => { while (LF.length <= n) LF.push(LF[LF.length - 1] + Math.log(LF.length)); return LF[n]; };
+/** Log chance of exactly k in n at rate p. */
+const lpmf = (k, n, p) => lf(n) - lf(k) - lf(n - k) + (k ? k * Math.log(p) : 0) + (n - k ? (n - k) * Math.log(1 - p) : 0);
+/** Chance of k or more in n at rate p. */
+const upperTail = (k, n, p) => { if (k <= 0) return 1; let s = 0; for (let i = k; i <= n; i++) s += Math.exp(lpmf(i, n, p)); return Math.min(1, s); };
+/** One-sided 95% Clopper-Pearson lower bound for k of n. */
+const cpLower = (k, n) => { if (k <= 0) return 0; if (k >= n) return Math.pow(0.05, 1 / n); let lo = 0, hi = k / n; for (let i = 0; i < 60; i++) { const m = (lo + hi) / 2; if (upperTail(k, n, m) < 0.05) lo = m; else hi = m; } return lo; };
+/** Fewest caught out of n whose lower bound clears the bar. */
+const kNeeded = (n, bar) => { for (let k = 0; k <= n; k++) if (cpLower(k, n) >= bar) return k; return null; };
+/** Chance that n real cases prove the bar, if the true recall is p. */
+const passChance = (n, bar, p) => { const k = kNeeded(n, bar); return k === null ? 0 : upperTail(k, n, p); };
+/** A percentage, with one decimal under 10. */
+const pct = (x) => { const v = x * 100; return (v < 10 && v > 0 ? v.toFixed(1) : Math.round(v)) + "%"; };
+
+/** Draw a line chart with a hover crosshair and tooltip. */
+const lineChart = (el, o) => {
+  const W = 680, H = 300, L = 46, R = 18, T = 14, B = 42;
+  const x = (v) => L + (v - o.x[0]) / (o.x[1] - o.x[0]) * (W - L - R);
+  const y = (v) => T + (1 - (v - o.y[0]) / (o.y[1] - o.y[0])) * (H - T - B);
+  let g = "";
+  (o.regions || []).forEach((r) => { g += `<rect x="${x(r.from)}" y="${T}" width="${x(r.to) - x(r.from)}" height="${H - T - B}" fill="var(${r.fill})"/>`; if (r.label) g += `<text x="${(x(r.from) + x(r.to)) / 2}" y="${T + 16}" text-anchor="middle">${r.label}</text>`; });
+  o.yTicks.forEach((t) => { g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}"/><text x="${L - 8}" y="${y(t) + 4}" text-anchor="end">${o.yFmt(t)}</text>`; });
+  o.xTicks.forEach((t) => { g += `<text x="${x(t)}" y="${H - B + 18}" text-anchor="middle">${o.xFmt(t)}</text>`; });
+  g += `<line class="axis" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/>`;
+  g += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle">${o.xLabel}</text>`;
+  (o.hlines || []).forEach((h) => { g += `<line class="ref" x1="${L}" x2="${W - R}" y1="${y(h.y)}" y2="${y(h.y)}"/><text class="lab" x="${W - R}" y="${y(h.y) - 6}" text-anchor="end">${h.label}</text>`; });
+  (o.vlines || []).forEach((v) => { g += `<line class="ref" x1="${x(v.x)}" x2="${x(v.x)}" y1="${T}" y2="${H - B}"/><text class="lab" x="${x(v.x) + 6}" y="${v.top ? T + 34 : H - B - 8}">${v.label}</text>`; });
+  o.series.forEach((s) => {
+    const d = s.points.map((p, i) => `${i ? "L" : "M"}${x(p[0]).toFixed(1)} ${y(p[1]).toFixed(1)}`).join(" ");
+    g += `<path d="${d}" fill="none" stroke="var(${s.color})" stroke-width="2.25" stroke-linejoin="round"/>`;
+  });
+  (o.marks || []).forEach((m) => { g += `<circle cx="${x(m.x)}" cy="${y(m.y)}" r="5" fill="var(${m.color})" stroke="var(--bg)" stroke-width="2"/><text class="lab" x="${x(m.x) + (m.dx || 10)}" y="${y(m.y) + (m.dy || -10)}" text-anchor="${m.anchor || "start"}">${m.label}</text>`; });
+  g += `<line id="${el.id}-x" class="ref" y1="${T}" y2="${H - B}" style="opacity:0"/>`;
+  g += `<rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" id="${el.id}-hit"/>`;
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria}">${g}</svg><div class="tip"></div>`;
+  const svg = el.querySelector("svg"), tip = el.querySelector(".tip"), hair = el.querySelector(`#${el.id}-x`);
+  const move = (ev) => {
+    const r = svg.getBoundingClientRect(); const sx = (ev.clientX - r.left) / r.width * W;
+    const xv = o.x[0] + (sx - L) / (W - L - R) * (o.x[1] - o.x[0]);
+    const pts = o.series[0].points; let i = 0; let best = Infinity;
+    pts.forEach((p, j) => { const dd = Math.abs(p[0] - xv); if (dd < best) { best = dd; i = j; } });
+    const px = x(pts[i][0]); hair.setAttribute("x1", px); hair.setAttribute("x2", px); hair.style.opacity = 1;
+    tip.innerHTML = `<b>${o.xFmt(pts[i][0], true)}</b><br>` + o.series.map((s) => `${s.name}: <b>${o.yFmt(s.points[i][1], true)}</b>`).join("<br>");
+    tip.style.left = (px / W * r.width) + "px"; tip.style.top = (y(Math.max(...o.series.map((s) => s.points[i][1]))) / H * r.height) + "px"; tip.classList.add("on");
+  };
+  const hit = el.querySelector(`#${el.id}-hit`);
+  hit.addEventListener("pointermove", move);
+  hit.addEventListener("pointerleave", () => { tip.classList.remove("on"); hair.style.opacity = 0; });
+};
+/** Normal-approximation 95% range for k of n: [low, high]. */
+const normalRange = (k, n, z = 1.96) => { const p = k / n, h = z * Math.sqrt(p * (1 - p) / n); return [Math.max(0, p - h), Math.min(1, p + h)]; };
+/** Draw a horizontal bar chart, highest first; rows are [label, value, highlight]. */
+const barChart = (el, rows, o = {}) => {
+  rows = [...rows].sort((a, b) => b[1] - a[1]);
+  const W = 680, rowH = 38, L = o.labelWidth || 230, R = 56, H = rows.length * rowH + 30, lo = o.from ?? 0;
+  const x = (v) => L + (v - lo) / (1 - lo) * (W - L - R);
+  let g = "";
+  (o.ticks || [0, 0.25, 0.5, 0.75, 1]).forEach((t) => { g += `<line class="grid" x1="${x(t)}" x2="${x(t)}" y1="0" y2="${H - 26}"/><text x="${x(t)}" y="${H - 8}" text-anchor="middle">${Math.round(t * 100)}%</text>`; });
+  rows.forEach(([name, v, ours], i) => {
+    const yy = i * rowH + 8;
+    g += `<text class="${ours ? "lab" : ""}" x="${L - 12}" y="${yy + 16}" text-anchor="end">${name}</text>`;
+    g += `<rect x="${x(lo)}" y="${yy + 2}" width="${x(v) - x(lo)}" height="20" rx="4" fill="var(${ours ? "--s1" : "--neutral-bar"})"><title>${name}: ${pct(v)}</title></rect>`;
+    g += `<text class="lab" x="${x(v) + 8}" y="${yy + 16}">${pct(v)}</text>`;
+  });
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria || ""}">${g}</svg>`;
+};
+/** A small table from a header row and rows. */
+const table = (el, head, rows) => { el.innerHTML = `<table><thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`; };
+
+// Chart 1: replace with the page's first chart. Every number the text quotes comes from code like this.
+{
+  const xs = []; for (let n = 10; n <= 200; n += 5) xs.push(n);
+  lineChart($("c1"), {
+    aria: "{{one sentence saying what the chart shows, with its key numbers}}",
+    x: [10, 200], y: [0, 1], xTicks: [10, 50, 100, 150, 200], yTicks: [0, 0.25, 0.5, 0.75, 1],
+    xFmt: (v, tip) => (tip ? `${v} traces` : v), yFmt: (v, tip) => (tip ? pct(v) : Math.round(v * 100) + "%"), xLabel: "{{x axis}}",
+    series: [{ name: "{{series 1}}", color: "--s1", points: xs.map((n) => [n, cpLower(Math.round(n * 0.9), n)]) }, { name: "{{series 2}}", color: "--s2", points: xs.map((n) => [n, cpLower(Math.round(n * 0.8), n)]) }],
+  });
+  table($("c1t"), ["{{x}}", "{{series 1}}", "{{series 2}}"], [20, 50, 100, 200].map((n) => [n, pct(cpLower(Math.round(n * 0.9), n)), pct(cpLower(Math.round(n * 0.8), n))]));
+}
+</script>
