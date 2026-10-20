@@ -12,7 +12,7 @@ that flags machine-written patterns.
 [![Version 0.1.0](https://img.shields.io/badge/version-0.1.0-informational)](CHANGELOG.md)
 [![X @manuel_mch](https://img.shields.io/badge/X-@manuel__mch-black?logo=x&logoColor=white)](https://x.com/manuel_mch)
 
-<img src="docs/demo.gif" alt="The check script reports 21 hits on a sloppy write-up, then 0 hits on a clean version of the same write-up" width="780">
+<img src="docs/demo.gif" alt="The check script reports 30 hits on a sloppy write-up, then 0 hits on a clean version of the same write-up" width="780">
 
 </div>
 
@@ -32,8 +32,9 @@ It works in Claude Code, Cursor and OpenAI Codex, and in other agents that read 
 
 ## Before and after
 
-The same write-up about prompt caching, first in a deliberately sloppy version, then written to the
-skill's rules. Both are in [examples/](examples/).
+The opening of the same article about prompt caching, first in a deliberately sloppy version, then
+written to the skill's rules. The full articles, about 600 and 850 words, are in
+[examples/](examples/).
 
 <!-- check:off -->
 
@@ -63,22 +64,22 @@ the one term a reader may not know, and says when caching stops paying.
 ## What the check script reports
 
 [`scripts/check.mjs`](scripts/check.mjs) reads a Markdown or HTML file and lists every hit with its
-line. On the full sloppy example it reports 21 hits (first lines shown):
+line. On the full sloppy example it reports 30 hits (first lines shown):
 
 ```text
 $ node scripts/check.mjs examples/sloppy.md
-examples/sloppy.md: 21 hits. Rewrite: 3 or more hits reads as machine-written.
+examples/sloppy.md: 30 hits. Rewrite: 3 or more hits reads as machine-written.
 
 Reversal (it's not X, it's Y) (1)
   line 7: It's not just about saving money, it's
 
 Colon set-up (1)
-  line 12: Here's the thing:
+  line 25: Here's the thing:
 
-Tacked-on -ing clause (1)
-  line 12: , highlighting
+Announcing what's coming (1)
+  line 10: In this post, we'll
 
-False agency (1)
+"Let's" construction (1)
 ...
 ```
 
