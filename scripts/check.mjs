@@ -79,19 +79,22 @@ export const parseArgs = (argv) => {
 /** Turn HTML into Markdown-ish prose: headings, bold and paragraphs kept, markup and code dropped. */
 const fromHtml = (html) =>
   html
-    .replace(/<(script|style|code|pre)[\s\S]*?<\/\1>/gi, "")
+    .replace(/<(script|style|code|pre|table)[\s\S]*?<\/\1>/gi, "")
     .replace(/<h([1-6])[^>]*>/gi, (_, n) => "\n\n" + "#".repeat(Number(n)) + " ")
     .replace(/<\/?(strong|b)>/gi, "**")
     .replace(/<(p|li|div|figcaption|h[1-6]|tr|br)[^>]*>/gi, "\n\n")
     .replace(/<[^>]+>/g, "")
     .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;|&rsquo;/g, "'");
 
+/** Blank out a removed region but keep its line breaks, so later line numbers still match the source. */
+const blank = (m) => m.replace(/[^\n]/g, "");
+
 /** Remove regions between check:off and check:on comments (to the end of the file if check:on is missing). */
-const dropOff = (s) => s.replace(/<!--\s*check:off\s*-->[\s\S]*?(?:<!--\s*check:on\s*-->|$)/g, "");
+const dropOff = (s) => s.replace(/<!--\s*check:off\s*-->[\s\S]*?(?:<!--\s*check:on\s*-->|$)/g, blank);
 
 /** Drop front matter, fenced code, inline code and check:off regions, which aren't prose to judge. */
 const proseOnly = (md) =>
-  dropOff(md).replace(/^---\n[\s\S]*?\n---\n/, "").replace(/```[\s\S]*?```/g, "").replace(/`[^`\n]*`/g, "").replace(/\]\([^)\s]*\)/g, "]").replace(/https?:\/\/\S+/g, "");
+  dropOff(md).replace(/^---\n[\s\S]*?\n---\n/, blank).replace(/```[\s\S]*?```/g, blank).replace(/`[^`\n]*`/g, "").replace(/\]\([^)\s]*\)/g, "]").replace(/https?:\/\/\S+/g, "");
 
 /** Split a paragraph into sentences. */
 const sentences = (p) => p.replace(/\s+/g, " ").trim().split(/(?<=[.!?])\s+(?=[A-Z0-9"(])/).filter(Boolean);
@@ -117,10 +120,10 @@ const check = (text, o, raw = "") => {
     seen.add(key); add(rule, label, m[0], lineAt(text, m.index));
   }
   for (const [rule, label, re] of RAW_PATTERNS) for (const m of raw.matchAll(re)) add(rule, label, m[0], lineAt(raw, m.index));
-  if (!o.allowEmDash) for (const m of text.matchAll(/—|\s--\s/g)) add("em-dash", "Em dash", text.slice(Math.max(0, m.index - 30), m.index + 30), lineAt(text, m.index));
+  if (!o.allowEmDash) for (const m of text.matchAll(/—|\s--\s/g)) if (!inTable(m.index)) add("em-dash", "Em dash", text.slice(Math.max(0, m.index - 30), m.index + 30), lineAt(text, m.index));
   /** Bold that opens a list item is a label for that item, so it doesn't count as emphasis. */
   const isListLabel = (i) => /^\s*(?:[-*]|\d+\.)\s+$/.test(text.slice(text.lastIndexOf("\n", i - 1) + 1, i));
-  const bold = [...text.matchAll(/\*\*[^*\n]+\*\*/g)].filter((b) => !isListLabel(b.index));
+  const bold = [...text.matchAll(/\*\*[^*\n]+\*\*/g)].filter((b) => !isListLabel(b.index) && !inTable(b.index));
   if (bold.length > o.maxBold) add("bold", `Bold used ${bold.length} times (max ${o.maxBold})`, bold.map((b) => b[0]).slice(0, 3).join(" · "), lineAt(text, bold[0].index));
   let offset = 0;
   for (const block of text.split(/\n\s*\n/)) {
@@ -151,10 +154,21 @@ const check = (text, o, raw = "") => {
 export const verdict = (n) => (n === 0 ? "Clean" : n < 3 ? "Review the hits" : "Rewrite: 3 or more hits reads as machine-written");
 
 /** Check a document's raw text. Set `html` for an HTML page; other options as for the command line. */
-export const analyse = (raw, { html = false, maxBold = 3, allowEmDash = false } = {}) => {
+export const analyse = (input, { html = false, maxBold = 3, allowEmDash = false } = {}) => {
+  // Curly quotes become straight ones (same length, so offsets don't move) so "Let’s" matches like "Let's".
+  const raw = input.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
   const text = html ? proseOnly(fromHtml(dropOff(raw))) : proseOnly(raw);
   const { hits, notes } = check(text, { maxBold, allowEmDash }, dropOff(raw));
+  if (html) for (const h of [...hits, ...notes]) h.line = sourceLine(raw, h.sample) ?? h.line;
   return { hits, notes, verdict: verdict(hits.length) };
+};
+
+/** The source line of a sample in an HTML file, allowing tags and line breaks between its first words. */
+const sourceLine = (raw, sample) => {
+  const ws = sample.replace(/\*\*/g, "").split(/\s+/).filter(Boolean).slice(0, 4).map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  if (!ws.length) return null;
+  const m = new RegExp(ws.join("(?:\\s|<[^>]+>)+"), "i").exec(raw);
+  return m ? lineAt(raw, m.index) : null;
 };
 
 /** Command-line entry point. */

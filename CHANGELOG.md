@@ -7,6 +7,16 @@ latest entry.
 
 ## [Unreleased]
 
+### Fixed
+
+- Line numbers in the report now match the source after front matter, fenced code and `check:off`
+  regions, and HTML hits point to the line in the HTML file.
+- Curly apostrophes and quotes match like straight ones, so a contraction typed with a curly
+  apostrophe is caught the same way.
+- Em dashes and bold inside Markdown tables no longer count, and HTML tables are skipped, as the
+  README says.
+- `references/review.md` runs the script from the installed skill folder, not the current one.
+
 ## [0.1.0] - 2026-10-20
 
 First shareable version, named `no-slop-technical-writing`. Earlier private drafts were called
