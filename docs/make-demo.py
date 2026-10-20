@@ -96,17 +96,15 @@ sloppy = (ROOT / "examples" / "sloppy.md").read_text().split("\n\n")
 type_command(screen, "sed -n 3,7p examples/sloppy.md")
 for para in sloppy[1:3]:
     screen += wrap(para) + [""]
-add(screen, 1500)
+add(screen, 3000)
 
 type_command(screen, "node scripts/check.mjs examples/sloppy.md")
 for i, line in enumerate(run("node", "scripts/check.mjs", "examples/sloppy.md")[:REPORT_LINES]):
     screen.append(line)
     add(screen, 1000 if i == 0 else 80)
-screen.append("  …")
-add(screen, 5000)
+screen += ["  …", ""]
+add(screen, 3500)
 
-# Second screen: the clean version, on a cleared terminal.
-screen = []
 clean = (ROOT / "examples" / "clean.md").read_text().split("\n\n")
 type_command(screen, "sed -n 3,6p examples/clean.md")
 screen += wrap(clean[1]) + [""]
