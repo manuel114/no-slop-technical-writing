@@ -9,7 +9,8 @@ latest entry.
 
 ## [0.1.0] - 2026-10-20
 
-First shareable version.
+First shareable version, named `no-slop-technical-writing`. Earlier private drafts were called
+`technical-writing`.
 
 ### Added
 

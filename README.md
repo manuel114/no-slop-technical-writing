@@ -1,4 +1,4 @@
-# technical-writing
+# no-slop-technical-writing
 
 An agent skill for writing technical content that is plain and exact: how a system or method works,
 the maths behind a decision, a measurement write-up, a design note. The model is the data-led
@@ -89,19 +89,19 @@ already. The script needs Node.js 22 or later and has no dependencies.
 
 The skill is the whole folder: `SKILL.md` loads files from `references/`, `scripts/` and
 `templates/`, so copy all of it. Some agents require the folder name to match the `name` in
-`SKILL.md`, which is `technical-writing`.
+`SKILL.md`, which is `no-slop-technical-writing`.
 
 ### Claude Code
 
 For every project:
 
 ```bash
-git clone https://github.com/manuel114/technical-writing ~/.claude/skills/technical-writing
+git clone https://github.com/manuel114/no-slop-technical-writing ~/.claude/skills/no-slop-technical-writing
 ```
 
-For one repository, clone it into `.claude/skills/technical-writing` at the repository root
+For one repository, clone it into `.claude/skills/no-slop-technical-writing` at the repository root
 instead. Claude Code picks the skill up on its own when a request matches its description, and
-`/technical-writing` runs it directly.
+`/no-slop-technical-writing` runs it directly.
 
 ### Cursor
 
@@ -110,7 +110,7 @@ Cursor reads skills from `.cursor/skills/` or `.agents/skills/` in a project, an
 reads `.claude/skills/`, so a copy installed for Claude Code works in Cursor without a second copy.
 
 ```bash
-git clone https://github.com/manuel114/technical-writing ~/.cursor/skills/technical-writing
+git clone https://github.com/manuel114/no-slop-technical-writing ~/.cursor/skills/no-slop-technical-writing
 ```
 
 ### OpenAI Codex
@@ -119,7 +119,7 @@ Codex reads skills from `.agents/skills/` in the repository and from `~/.agents/
 project ([Codex docs](https://developers.openai.com/codex/skills)).
 
 ```bash
-git clone https://github.com/manuel114/technical-writing ~/.agents/skills/technical-writing
+git clone https://github.com/manuel114/no-slop-technical-writing ~/.agents/skills/no-slop-technical-writing
 ```
 
 ### Other agents, or a plain copy
@@ -130,7 +130,7 @@ and keep the rest of the folder next to it, so the links to `references/` resolv
 runs on its own anywhere Node.js 22 is installed:
 
 ```bash
-node path/to/technical-writing/scripts/check.mjs draft.md
+node path/to/no-slop-technical-writing/scripts/check.mjs draft.md
 ```
 
 To fail a CI job on a sloppy document, run it with `--strict`.

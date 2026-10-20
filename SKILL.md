@@ -1,12 +1,12 @@
 ---
-name: technical-writing
+name: no-slop-technical-writing
 description: Write technical content (how a system or method works, the maths behind a decision, a measurement write-up, a design note, a methods page) that is plain and exact, without AI slop, and review it adversarially before it ships. Covers structure, voice, terms, numbers, charts, an optional HTML page shell with chart and statistics helpers, a catalogue of patterns to avoid and patterns to replicate, and a self-contained review pass (a check script plus an adversarial read). Use when asked for a technical write-up, an explainer, a methods page, a doc that explains numbers, or to de-slop technical prose.
 version: 0.1.0
 license: MIT
 compatibility: Any AI coding assistant that supports the agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, OpenHands, etc.) or OpenClaw. The check script needs Node.js 22 or later; everything else is plain Markdown and HTML.
 metadata:
   author: Manuel (manuel114)
-  repository: https://github.com/manuel114/technical-writing
+  repository: https://github.com/manuel114/no-slop-technical-writing
   tags: writing technical-writing statistics charts editing quality
   agentskills_spec: "1.0"
   openclaw:
