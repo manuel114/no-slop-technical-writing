@@ -10,22 +10,25 @@ number computed, and a check script that flags machine-written patterns.
 [![Node.js 22+](https://img.shields.io/badge/Node.js-22%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-6f42c1)](https://agentskills.io)
 [![Version 0.1.0](https://img.shields.io/badge/version-0.1.0-informational)](CHANGELOG.md)
+[![X @manuel_mch](https://img.shields.io/badge/X-@manuel__mch-black?logo=x&logoColor=white)](https://x.com/manuel_mch)
 
 <img src="docs/demo.gif" alt="The check script reports 39 hits on a sloppy write-up, then 0 hits on a clean version of the same write-up" width="780">
 
 </div>
 
-It is for technical content: how a system or method works, the maths behind a decision, a
-measurement write-up, a design note. Each chart or table carries one finding, and the sentences
-between them are flat statements of fact.
+---
 
-The skill has two halves. The writing rules tell the agent how to structure a piece, name terms,
-handle numbers and state limits. The review half is a catalogue of 68 patterns that make text read
-as machine-written, a check script for the 40 of them that a script can find, and an adversarial
-read for the rest.
+Give this skill to your coding agent when you need a technical write-up: a design doc, a benchmark
+report, or an explanation of how something works. It does two things.
 
-It follows the [Agent Skills](https://agentskills.io) `SKILL.md` format, so it works in Claude
-Code, Cursor, OpenAI Codex and other agents that read that format.
+1. **It writes the piece.** The result comes first, every number comes from a real calculation, and
+   the sentences are plain.
+2. **It checks the piece.** A script flags 40 common signs of machine-written text, such as
+   `It's not X, it's Y` or `Let's dive in`. The agent then rereads the piece for the signs a script
+   can't catch.
+
+It works in Claude Code, Cursor, OpenAI Codex and any other agent that reads the
+[Agent Skills](https://agentskills.io) format.
 
 ## Before and after
 
