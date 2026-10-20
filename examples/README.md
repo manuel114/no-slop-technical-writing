@@ -7,7 +7,7 @@ rate) is computed from its table.
 
 | File | What it shows | Check script result |
 | --- | --- | --- |
-| [sloppy.md](sloppy.md) | The write-up as an agent tends to produce it without the skill | 21 hits, Rewrite |
+| [sloppy.md](sloppy.md) | The write-up without the skill's rules | 21 hits, Rewrite |
 | [clean.md](clean.md) | The same content written to the skill's rules | 0 hits, Clean |
 
 The sloppy version is the only Markdown file in the repository that is meant to fail the check, so
