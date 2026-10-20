@@ -12,7 +12,8 @@ the clean version (the means, the savings, the break-even hit rate) is computed 
 The sloppy version is the only Markdown file in the repository that is meant to fail the check, so
 the tests leave it out of the self-check and assert instead that it reads as machine-written.
 
-Run the check script on either file from the repository root:
+Run the check script on either file from the skill's own folder (the repository root if you cloned
+it on its own, or `.claude/skills/no-slop-technical-writing/` inside a project):
 
 ```bash
 node scripts/check.mjs examples/sloppy.md
