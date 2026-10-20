@@ -1,0 +1,20 @@
+{
+  "name": "no-slop-technical-writing",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An agent skill for plain, exact technical writing, with a dependency-free check script for machine-written patterns.",
+  "license": "MIT",
+  "author": "Manuel (https://github.com/manuel114)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manuel114/no-slop-technical-writing.git"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test",
+    "check": "node scripts/check.mjs"
+  }
+}

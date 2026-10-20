@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Flags the mechanical patterns in references/avoid.md. No dependencies; Node 22+.
 // Usage: node check.mjs <file.md|file.html> [--json] [--max-bold 3] [--allow-em-dash] [--strict]
-import { readFileSync } from "node:fs";
+import { readFileSync, realpathSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 /** Words that inflate a sentence without adding meaning (stems match common inflections). */
 const INFLATED = [
@@ -61,7 +62,7 @@ const PATTERNS = [
 const RAW_PATTERNS = [["tool-leftover", "Tool leftover", /oaicite|【[^】\n]*】|utm_source=(?:chatgpt\.com|openai)/gi]];
 
 /** Parse command-line flags. */
-const parseArgs = (argv) => {
+export const parseArgs = (argv) => {
   const o = { file: null, json: false, maxBold: 3, allowEmDash: false, strict: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -85,9 +86,12 @@ const fromHtml = (html) =>
     .replace(/<[^>]+>/g, "")
     .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;|&rsquo;/g, "'");
 
+/** Remove regions between check:off and check:on comments (to the end of the file if check:on is missing). */
+const dropOff = (s) => s.replace(/<!--\s*check:off\s*-->[\s\S]*?(?:<!--\s*check:on\s*-->|$)/g, "");
+
 /** Drop front matter, fenced code, inline code and check:off regions, which aren't prose to judge. */
 const proseOnly = (md) =>
-  md.replace(/<!--\s*check:off\s*-->[\s\S]*?(?:<!--\s*check:on\s*-->|$)/g, "").replace(/^---\n[\s\S]*?\n---\n/, "").replace(/```[\s\S]*?```/g, "").replace(/`[^`\n]*`/g, "").replace(/\]\([^)\s]*\)/g, "]").replace(/https?:\/\/\S+/g, "");
+  dropOff(md).replace(/^---\n[\s\S]*?\n---\n/, "").replace(/```[\s\S]*?```/g, "").replace(/`[^`\n]*`/g, "").replace(/\]\([^)\s]*\)/g, "]").replace(/https?:\/\/\S+/g, "");
 
 /** Split a paragraph into sentences. */
 const sentences = (p) => p.replace(/\s+/g, " ").trim().split(/(?<=[.!?])\s+(?=[A-Z0-9"(])/).filter(Boolean);
@@ -101,7 +105,7 @@ const lineAt = (text, i) => text.slice(0, i).split("\n").length;
 /** Run every check and return the hits. */
 const check = (text, o, raw = "") => {
   const hits = [];
-  const add = (rule, label, sample, line) => hits.push({ rule, label, sample: sample.trim().slice(0, 140), line });
+  const add = (rule, label, sample, line) => hits.push({ rule, label, sample: sample.replace(/\s+/g, " ").trim().slice(0, 140), line });
   const seen = new Set();
   const lines = text.split("\n");
   /** Whether a match sits in a Markdown table row, where fragments and symbols are normal. */
@@ -114,7 +118,9 @@ const check = (text, o, raw = "") => {
   }
   for (const [rule, label, re] of RAW_PATTERNS) for (const m of raw.matchAll(re)) add(rule, label, m[0], lineAt(raw, m.index));
   if (!o.allowEmDash) for (const m of text.matchAll(/—|\s--\s/g)) add("em-dash", "Em dash", text.slice(Math.max(0, m.index - 30), m.index + 30), lineAt(text, m.index));
-  const bold = [...text.matchAll(/\*\*[^*\n]+\*\*/g)];
+  /** Bold that opens a list item is a label for that item, so it doesn't count as emphasis. */
+  const isListLabel = (i) => /^\s*(?:[-*]|\d+\.)\s+$/.test(text.slice(text.lastIndexOf("\n", i - 1) + 1, i));
+  const bold = [...text.matchAll(/\*\*[^*\n]+\*\*/g)].filter((b) => !isListLabel(b.index));
   if (bold.length > o.maxBold) add("bold", `Bold used ${bold.length} times (max ${o.maxBold})`, bold.map((b) => b[0]).slice(0, 3).join(" · "), lineAt(text, bold[0].index));
   let offset = 0;
   for (const block of text.split(/\n\s*\n/)) {
@@ -142,30 +148,41 @@ const check = (text, o, raw = "") => {
 };
 
 /** The verdict for a number of hits. */
-const verdict = (n) => (n === 0 ? "Clean" : n < 3 ? "Review the hits" : "Rewrite: 3 or more hits reads as machine-written");
+export const verdict = (n) => (n === 0 ? "Clean" : n < 3 ? "Review the hits" : "Rewrite: 3 or more hits reads as machine-written");
 
-const o = parseArgs(process.argv.slice(2));
-if (o.help || !o.file) {
-  console.log("Usage: node check.mjs <file.md|file.html> [--json] [--max-bold 3] [--allow-em-dash] [--strict]");
-  process.exit(o.help ? 0 : 2);
-}
-let raw;
-try { raw = readFileSync(o.file, "utf8"); } catch (e) { console.error(`Can't read ${o.file}: ${e.message}`); process.exit(2); }
-const text = /\.html?$/i.test(o.file) ? proseOnly(fromHtml(raw.replace(/<!--\s*check:off\s*-->[\s\S]*?(?:<!--\s*check:on\s*-->|$)/g, ""))) : proseOnly(raw);
-const { hits, notes } = check(text, o, raw.replace(/<!--\s*check:off\s*-->[\s\S]*?(?:<!--\s*check:on\s*-->|$)/g, ""));
-if (o.json) {
-  console.log(JSON.stringify({ file: o.file, hits: hits.length, verdict: verdict(hits.length), details: hits, xNotY: notes }, null, 2));
-} else {
-  console.log(`${o.file}: ${hits.length} hit${hits.length === 1 ? "" : "s"}. ${verdict(hits.length)}.`);
-  const byRule = Map.groupBy(hits, (h) => h.label);
-  for (const [label, hs] of byRule) {
-    console.log(`\n${label} (${hs.length})`);
-    hs.slice(0, 5).forEach((h) => console.log(`  line ${h.line}: ${h.sample}`));
-    if (hs.length > 5) console.log(`  … ${hs.length - 5} more`);
+/** Check a document's raw text. Set `html` for an HTML page; other options as for the command line. */
+export const analyse = (raw, { html = false, maxBold = 3, allowEmDash = false } = {}) => {
+  const text = html ? proseOnly(fromHtml(dropOff(raw))) : proseOnly(raw);
+  const { hits, notes } = check(text, { maxBold, allowEmDash }, dropOff(raw));
+  return { hits, notes, verdict: verdict(hits.length) };
+};
+
+/** Command-line entry point. */
+const main = () => {
+  const o = parseArgs(process.argv.slice(2));
+  if (o.help || !o.file) {
+    console.log("Usage: node check.mjs <file.md|file.html> [--json] [--max-bold 3] [--allow-em-dash] [--strict]");
+    process.exit(o.help ? 0 : 2);
   }
-  if (notes.length) {
-    console.log(`\nTo read by hand: ", not …" (${notes.length}). Keep each only if it states a real distinction.`);
-    notes.slice(0, 5).forEach((n) => console.log(`  line ${n.line}: ${n.sample}`));
+  let raw;
+  try { raw = readFileSync(o.file, "utf8"); } catch (e) { console.error(`Can't read ${o.file}: ${e.message}`); process.exit(2); }
+  const { hits, notes } = analyse(raw, { ...o, html: /\.html?$/i.test(o.file) });
+  if (o.json) {
+    console.log(JSON.stringify({ file: o.file, hits: hits.length, verdict: verdict(hits.length), details: hits, xNotY: notes }, null, 2));
+  } else {
+    console.log(`${o.file}: ${hits.length} hit${hits.length === 1 ? "" : "s"}. ${verdict(hits.length)}.`);
+    const byRule = Map.groupBy(hits, (h) => h.label);
+    for (const [label, hs] of byRule) {
+      console.log(`\n${label} (${hs.length})`);
+      hs.slice(0, 5).forEach((h) => console.log(`  line ${h.line}: ${h.sample}`));
+      if (hs.length > 5) console.log(`  … ${hs.length - 5} more`);
+    }
+    if (notes.length) {
+      console.log(`\nTo read by hand: ", not …" (${notes.length}). Keep each only if it states a real distinction.`);
+      notes.slice(0, 5).forEach((n) => console.log(`  line ${n.line}: ${n.sample}`));
+    }
   }
-}
-process.exit(o.strict && hits.length >= 3 ? 1 : 0);
+  process.exit(o.strict && hits.length >= 3 ? 1 : 0);
+};
+
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) main();
