@@ -41,8 +41,12 @@ chart means.
 
 - **Introduced by a framing paragraph**, never "Figure 3 shows…". The paragraph sets the question;
   the chart answers it.
-- **Titled with the finding**, subtitled with what is measured. (Research notes often leave the
-  title in the image alone; put it in text too, so it can be read, searched and checked.)
+- **The finding is stated next to it**, in the chart's title or in the heading or sentence just
+  above, and the subtitle says what is measured. (Research notes often leave the title in the
+  image alone; put it in text too, so it can be read, searched and checked.)
+- **Chosen for the kind of finding.** A comparison or a trend in collected data gets a chart; a
+  worked calculation stays in prose; reference data is a table. See
+  [charts.md](charts.md#when-a-finding-gets-a-chart).
 - **Followed by what it means.** The sentence after a chart does one of these:
   - names the takeaway, with the number: "At 45 flagged, a 95% evaluator passes about 9 rounds in
     10.";
