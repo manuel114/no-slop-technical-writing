@@ -18,22 +18,22 @@ that flags machine-written patterns.
 
 ---
 
-Give this skill to your coding agent when you need a technical write-up: a design doc, a benchmark
-report, or an explanation of how something works. It does two things.
+Give this skill to your coding agent when you need a technical write-up, such as a design doc or a
+benchmark report. It does two things.
 
-1. **It writes the piece.** The result comes first, every number comes from a real calculation, and
-   the sentences are plain.
-2. **It checks the piece.** A check script flags 40 machine-written patterns, such as
-   `It's not X, it's Y` or `Let's dive in`. The piece is then reread for the patterns a script can't
-   catch, by a second agent for anything long.
+1. **It writes the piece.** The result comes first, every number is computed in code, and the
+   sentences are plain.
+2. **It checks the piece.** A check script checks for 40 of the 68 patterns in the skill's catalogue of
+   machine-written text, such as `It's not X, it's Y` or `Let's dive in`. The agent then rereads the
+   piece against the whole catalogue; for a long or high-stakes piece, a separate agent does the read.
 
 It works in Claude Code, Cursor and OpenAI Codex, and in other agents that read the
 [Agent Skills](https://agentskills.io) format.
 
 ## Before and after
 
-The same write-up about prompt caching, first without the skill's rules, then with them. Both are
-in [examples/](examples/).
+The same write-up about prompt caching, first in a deliberately sloppy version, then written to the
+skill's rules. Both are in [examples/](examples/).
 
 <!-- check:off -->
 
@@ -104,8 +104,8 @@ already. The script needs Node.js 22 or later and has no dependencies.
 ## Install
 
 The skill is the whole folder: `SKILL.md` loads files from `references/`, `scripts/` and
-`templates/`, so copy all of it. Some agents require the folder name to match the `name` in
-`SKILL.md`, which is `no-slop-technical-writing`.
+`templates/`, so copy all of it. The Agent Skills format requires the folder name to match the
+`name` in `SKILL.md`, which is `no-slop-technical-writing`.
 
 ### Claude Code
 
@@ -143,7 +143,7 @@ git clone https://github.com/manuel114/no-slop-technical-writing ~/.agents/skill
 Any agent that reads `SKILL.md` folders takes the same folder; put it wherever that agent looks for
 skills. For a tool without skill support, add the contents of `SKILL.md` to its instructions file
 and keep the rest of the folder next to it, so the links to `references/` resolve. The check script
-runs on its own anywhere Node.js 22 is installed:
+runs on its own anywhere Node.js 22 or later is installed:
 
 ```bash
 node path/to/no-slop-technical-writing/scripts/check.mjs draft.md
@@ -154,10 +154,9 @@ To fail a CI job on a sloppy document, run it with `--strict`.
 ## Using it
 
 Ask for the kind of piece the skill covers, for example "write up the benchmark results as a
-research note", "explain how the retry budget works", or "de-slop this design doc". The agent
-outlines first, drafts with every number computed, then runs the review in
-[references/review.md](references/review.md): the check script, then a read against the catalogue for
-the patterns a script can't catch, by a second agent for anything long.
+research note" or "check this design doc for machine-written patterns". The agent outlines first,
+drafts with every number computed, then runs the review in
+[references/review.md](references/review.md).
 
 For a standalone page, [templates/page.html](templates/page.html) is a single-file HTML research
 note with light and dark themes, line and bar chart helpers with data tables, and helpers for pass
@@ -186,7 +185,7 @@ Run them from the skill's own folder:
 node --test
 ```
 
-Each check has a case that must fire it and a near miss that must not. Further cases cover the
+Each rule has a case that must fire it and a near miss that must not. Further cases cover the
 places a check script can misfire: tables, lists, URLs, code, front matter, decimals,
 `check:off` regions, and statistics terms such as "true recall" or "the real rate". The suite
 also runs the check script on every Markdown file in this repository, except the sloppy example, and
@@ -194,8 +193,9 @@ fails if any is not Clean. CI runs it on Node.js 22 and 24.
 
 ## House style
 
-The rules are defaults. A project can add its own (banned words, required terms, a ban on em
-dashes) in a small skill of its own that loads this one first. See
+The rules are defaults. A project can add its own, such as banned words or required terms, in its
+own instructions; where those are stricter, they win. Where a project's style allows em dashes, run
+the check script with `--allow-em-dash`. See
 [CONTRIBUTING.md](CONTRIBUTING.md) to report a false alarm or propose a pattern.
 
 ## License
