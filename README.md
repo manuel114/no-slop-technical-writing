@@ -2,8 +2,8 @@
 
 # no-slop-technical-writing
 
-An agent skill for technical writing that reads like a data-led research note: the claim first, every
-number computed, and a check script that flags machine-written patterns.
+An agent skill for technical writing that reads like a data-led research note, with a check script
+that flags machine-written patterns.
 
 [![test](https://github.com/manuel114/no-slop-technical-writing/actions/workflows/test.yml/badge.svg)](https://github.com/manuel114/no-slop-technical-writing/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -23,17 +23,17 @@ report, or an explanation of how something works. It does two things.
 
 1. **It writes the piece.** The result comes first, every number comes from a real calculation, and
    the sentences are plain.
-2. **It checks the piece.** A script flags 40 common signs of machine-written text, such as
-   `It's not X, it's Y` or `Let's dive in`. The agent then rereads the piece for the signs a script
-   can't catch.
+2. **It checks the piece.** A check script flags 40 machine-written patterns, such as
+   `It's not X, it's Y` or `Let's dive in`. The piece is then reread for the patterns a script can't
+   catch, by a second agent for anything long.
 
-It works in Claude Code, Cursor, OpenAI Codex and any other agent that reads the
+It works in Claude Code, Cursor and OpenAI Codex, and in other agents that read the
 [Agent Skills](https://agentskills.io) format.
 
 ## Before and after
 
-The same write-up about prompt caching, first as an agent tends to produce it, then with the skill.
-Both are in [examples/](examples/).
+The same write-up about prompt caching, first without the skill's rules, then with them. Both are
+in [examples/](examples/).
 
 <!-- check:off -->
 
@@ -156,12 +156,12 @@ To fail a CI job on a sloppy document, run it with `--strict`.
 Ask for the kind of piece the skill covers, for example "write up the benchmark results as a
 research note", "explain how the retry budget works", or "de-slop this design doc". The agent
 outlines first, drafts with every number computed, then runs the review in
-[references/review.md](references/review.md): the check script, then a read against the
-catalogue by a reader whose only job is to find slop.
+[references/review.md](references/review.md): the check script, then a read against the catalogue for
+the patterns a script can't catch, by a second agent for anything long.
 
 For a standalone page, [templates/page.html](templates/page.html) is a single-file HTML research
-note with light and dark themes, line and bar chart helpers with data tables, and binomial
-statistics helpers.
+note with light and dark themes, line and bar chart helpers with data tables, and helpers for pass
+rates and the range they could plausibly fall in.
 
 ## What's in the repository
 
@@ -187,9 +187,9 @@ node --test
 ```
 
 Each check has a case that must fire it and a near miss that must not. Further cases cover the
-places a pattern checker tends to misfire: tables, lists, URLs, code, front matter, decimals,
+places a check script can misfire: tables, lists, URLs, code, front matter, decimals,
 `check:off` regions, and statistics terms such as "true recall" or "the real rate". The suite
-also runs the checker on every Markdown file in this repository, except the sloppy example, and
+also runs the check script on every Markdown file in this repository, except the sloppy example, and
 fails if any is not Clean. CI runs it on Node.js 22 and 24.
 
 ## House style
