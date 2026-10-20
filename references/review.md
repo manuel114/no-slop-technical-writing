@@ -21,8 +21,8 @@ for a machine-readable report, and `--strict` to exit 1 at three or more hits (f
 
 It prints each hit with its line, a verdict (Clean / Review the hits / Rewrite), and a separate
 list of ", not …" phrases to read by hand. Aim for Clean. Fix every hit you can't justify, and say
-which you kept and why. Quoted examples of bad writing (in a style guide, say) will trip it; that's
-expected.
+which you kept and why. Quoted examples of bad writing (in a style guide, say) will trip it. Wrap them in
+`<!-- check:off -->` and `<!-- check:on -->` to leave them out.
 
 ## 2. The adversarial read
 

@@ -1,6 +1,6 @@
 # technical-writing
 
-An agent skill for writing technical content that is plain, exact and free of AI slop: how a
+An agent skill for writing technical content that is plain and exact, without AI slop: how a
 system or method works, the maths behind a decision, a measurement write-up, a design note.
 
 It gives the agent:

@@ -12,8 +12,8 @@ A chart in technical writing carries one finding. Use a colour-validated palette
   above them.
 - **Reference lines say what they mark** and sit where they can't be misread as a threshold they
   aren't.
-- **Sort bar charts highest first.** Highlight your own value and label what it is ("Our bar:
-  proven 80%"), not what it takes.
+- **Sort bar charts highest first.** Highlight your own value and label it with what it is ("Our
+  bar: proven 80%"); the caption explains how it translates to the other bars.
 - **Isolate one effect.** A chart about one quantity holds the others fixed, and the caption says
   what is held fixed ("assumes every real case is caught").
 - **Label what-if axes honestly.** If a line plots a true value nobody can measure, call it

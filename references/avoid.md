@@ -1,11 +1,13 @@
 # Patterns to avoid
 
-Each entry: what it looks like, an example, and the fix. Entries marked **(check)** are found by
+Each entry says what the pattern looks like, usually with an example, and how to fix it. Entries marked **(check)** are found by
 [`scripts/check.mjs`](../scripts/check.mjs); the rest need a read. One hit is forgivable; three or
 more in a piece means it reads as machine-written, so rewrite before it ships.
 
 The common thread: machine writing performs instead of informing. It dresses every sentence up,
 reaches for the same few constructions, and fills gaps with detail that isn't real.
+
+<!-- check:off -->
 
 ## Sentence shapes
 
@@ -24,14 +26,15 @@ reaches for the same few constructions, and fills gaps with detail that isn't re
   Fix: state the thing.
 - **Stacked descriptions.** "a cheap model, carefully tuned, rarely wrong". Fix: one claim per
   clause, with its number.
-- **Rhetorical questions** as transitions ("So what does this mean?"). Fix: answer it as a
+- **Rhetorical questions (partly checked)** as transitions ("So what does this mean?"). Fix: answer it as a
   statement.
 
 ## Openings and endings
 
 - **Grand openers (check).** "In today's rapidly evolving landscape…", "In the world of AI…",
   "Now more than ever…". Fix: open on the specific problem or result.
-- **Announcing what's coming (check).** "In this post, we'll explore…", "Let's dive in." Fix: start.
+- **Announcing what's coming (check).** "In this post, we'll explore…", "Let's dive in." Fix: cut
+  it and open on the first real sentence.
 - **Summaries and send-offs (check).** "In conclusion", "Ultimately", "At the end of the day", a
   closing question, a "what's next" that promises nothing specific. Fix: end on the last piece of
   content.
@@ -39,7 +42,7 @@ reaches for the same few constructions, and fills gaps with detail that isn't re
 ## Words
 
 - **Inflated words (check).** delve, tapestry, landscape, realm, journey, navigate, unlock,
-  unleash, empower, elevate, foster, harness, leverage (as a verb), streamline, supercharge,
+  unleash, empower, elevate, foster, leverage (as a verb), streamline, supercharge,
   robust, seamless, cutting-edge, game-changing, groundbreaking, transformative, pivotal, crucial,
   vital, paramount, intricate, multifaceted, holistic, synergy, paradigm, testament, underscore,
   showcase, myriad, plethora, ever-evolving. Fix: the plain word ("use", "important", "shows"), or
@@ -50,7 +53,7 @@ reaches for the same few constructions, and fills gaps with detail that isn't re
   "Needless to say". Fix: delete; if the sentence matters, it will show.
 - **Vague size words (check).** significantly, dramatically, substantially, vastly, a lot, hugely,
   when the sentence has no number. Fix: the number.
-- **Empty hedges.** "may potentially", "could possibly", "it seems that it might". Hedge once, and
+- **Empty hedges (partly checked).** "may potentially", "could possibly", "it seems that it might". Hedge once, and
   only on a prediction. Never hedge the method or the measured result.
 
 ## Formatting
@@ -66,8 +69,7 @@ reaches for the same few constructions, and fills gaps with detail that isn't re
 ## Substance
 
 - **Invented detail.** Any number, duration, count, place or feeling not in the sources ("after
-  weeks of testing", "our small team", "users love it"). That is fabrication. Fix: cut it, or find
-  the real figure.
+  weeks of testing", "our small team", "users love it"). Fix: cut it, or find the real figure.
 - **Claims with no receipt.** A comparison or number the writer can't point to: a measurement, a
   cited source, or a calculation on the page. Fix: cite it, compute it, or cut it.
 - **Rules that don't exist.** Describing a step, threshold or limit the process doesn't have

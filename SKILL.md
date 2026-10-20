@@ -1,6 +1,6 @@
 ---
 name: technical-writing
-description: Write technical content (how a system or method works, the maths behind a decision, a measurement write-up, a design note, a methods page) that is plain, exact and free of AI slop, and review it adversarially before it ships. Covers structure, voice, terms, numbers, charts, an optional HTML page shell with chart and statistics helpers, a catalogue of patterns to avoid and patterns to replicate, and a self-contained review pass (a check script plus an adversarial read). Use when asked for a technical write-up, an explainer, a methods page, a doc that explains numbers, or to de-slop technical prose.
+description: Write technical content (how a system or method works, the maths behind a decision, a measurement write-up, a design note, a methods page) that is plain and exact, without AI slop, and review it adversarially before it ships. Covers structure, voice, terms, numbers, charts, an optional HTML page shell with chart and statistics helpers, a catalogue of patterns to avoid and patterns to replicate, and a self-contained review pass (a check script plus an adversarial read). Use when asked for a technical write-up, an explainer, a methods page, a doc that explains numbers, or to de-slop technical prose.
 version: 0.1.0
 license: MIT
 compatibility: Any AI coding assistant that supports the agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, OpenHands, etc.) or OpenClaw. The check script needs Node.js 22 or later; everything else is plain Markdown and HTML.
@@ -19,6 +19,9 @@ Technical content earns trust when every sentence is plain enough to follow and 
 check. The model is a research note: a clear claim up front, evidence that each carries one
 finding, and flat sentences between them. The rules apply to any format: a docs page, a design
 doc, a PR description, a standalone HTML page.
+
+These skill files are checklists, so they use lists and bold labels. The pieces you write follow
+the rules below: prose paragraphs, and bold only on the main claim and one or two findings.
 
 Read these before writing:
 
@@ -41,11 +44,11 @@ which uses [scripts/check.mjs](scripts/check.mjs). For a standalone HTML page, s
   for the reader.
 - **Say where it stops being true.** Name the shortcuts and limits on purpose. For each: what you
   do, what it risks (with a number), why you accept it (usually time or money, with a number), and
-  what limits the damage. Calm, not defensive.
-- **End on the content.** No "What comes next", "How to use this", recap or closing question
-  unless asked for. A short methods note (methods by name, assumptions) is fine.
-- **Write steps as short paragraphs** ("First… Second… Third…") when each needs a sentence of
-  reasoning. Use a list only for parallel, one-line items.
+  what limits the damage. State each trade-off once, calmly, without arguing with critics.
+- **End on the content.** No "What comes next", "How to use this", recap or closing question,
+  unless the reader needs a procedure or someone asked for one. A short methods note (methods by name, assumptions) is fine.
+- **Write steps as short paragraphs** ("First…", "Second…", for however many steps there are)
+  when each needs a sentence of reasoning. Use a list only for parallel, one-line items.
 
 ## Voice
 
@@ -64,14 +67,14 @@ which uses [scripts/check.mjs](scripts/check.mjs). For a standalone HTML page, s
   document, or a calculation the reader can see. If you don't know what someone else does, say so.
 - **Not scary for no reason.** Label a worst case as a ceiling, then say why real results land
   below it and what corrects it.
-- **Plain headings and titles.** A heading says what the section covers or finds. No slogans, no
-  puns, no colon-teasers.
+- **Plain headings and titles.** A heading says what the section covers or finds. Slogans, puns
+  and colon-teasers don't.
 - **Bold sparingly**: the main claim and at most one or two key findings. None in side sections.
 - **House style overrides these defaults** where it is stricter (for example, no em dashes).
 
 ## Numbers
 
-- **Compute, don't eyeball.** Every number in the text comes from code you ran. Re-run it after
+- **Compute every number.** Every number in the text comes from code you ran. Re-run it after
   every edit that touches a number.
 - **Text matches tables and charts**, rounded the same way.
 - Prefer a measured value to an estimate, and say how it was measured.

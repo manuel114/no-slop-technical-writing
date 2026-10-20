@@ -59,9 +59,9 @@ const fromHtml = (html) =>
     .replace(/<[^>]+>/g, "")
     .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;|&rsquo;/g, "'");
 
-/** Drop front matter, fenced code and inline code, which aren't prose. */
+/** Drop front matter, fenced code, inline code and check:off regions, which aren't prose to judge. */
 const proseOnly = (md) =>
-  md.replace(/^---\n[\s\S]*?\n---\n/, "").replace(/```[\s\S]*?```/g, "").replace(/`[^`\n]*`/g, "");
+  md.replace(/<!--\s*check:off\s*-->[\s\S]*?(?:<!--\s*check:on\s*-->|$)/g, "").replace(/^---\n[\s\S]*?\n---\n/, "").replace(/```[\s\S]*?```/g, "").replace(/`[^`\n]*`/g, "");
 
 /** Split a paragraph into sentences. */
 const sentences = (p) => p.replace(/\s+/g, " ").trim().split(/(?<=[.!?])\s+(?=[A-Z0-9"(])/).filter(Boolean);
@@ -118,7 +118,7 @@ if (o.help || !o.file) {
 }
 let raw;
 try { raw = readFileSync(o.file, "utf8"); } catch (e) { console.error(`Can't read ${o.file}: ${e.message}`); process.exit(2); }
-const text = proseOnly(/\.html?$/i.test(o.file) ? fromHtml(raw) : raw);
+const text = /\.html?$/i.test(o.file) ? proseOnly(fromHtml(raw.replace(/<!--\s*check:off\s*-->[\s\S]*?(?:<!--\s*check:on\s*-->|$)/g, ""))) : proseOnly(raw);
 const { hits, notes } = check(text, o);
 if (o.json) {
   console.log(JSON.stringify({ file: o.file, hits: hits.length, verdict: verdict(hits.length), details: hits, xNotY: notes }, null, 2));
