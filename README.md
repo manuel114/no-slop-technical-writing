@@ -18,17 +18,17 @@ number computed, and a check script that flags machine-written patterns.
 
 ---
 
-It is for technical content: how a system or method works, the maths behind a decision, a
-measurement write-up, a design note. Each chart or table carries one finding, and the sentences
-between them are flat statements of fact.
+Give this skill to your coding agent when you need a technical write-up: a design doc, a benchmark
+report, or an explanation of how something works. It does two things.
 
-The skill has two halves. The writing rules tell the agent how to structure a piece, name terms,
-handle numbers and state limits. The review half is a catalogue of 68 patterns that make text read
-as machine-written, a check script for the 40 of them that a script can find, and an adversarial
-read for the rest.
+1. **It writes the piece.** The result comes first, every number comes from a real calculation, and
+   the sentences are plain.
+2. **It checks the piece.** A script flags 40 common signs of machine-written text, such as
+   `It's not X, it's Y` or `Let's dive in`. The agent then rereads the piece for the signs a script
+   can't catch.
 
-It follows the [Agent Skills](https://agentskills.io) `SKILL.md` format, so it works in Claude
-Code, Cursor, OpenAI Codex and other agents that read that format.
+It works in Claude Code, Cursor, OpenAI Codex and any other agent that reads the
+[Agent Skills](https://agentskills.io) format.
 
 ## Before and after
 
