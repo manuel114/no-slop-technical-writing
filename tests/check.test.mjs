@@ -19,7 +19,7 @@ const rules = (text, opts) => new Set(analyse(text, opts).hits.map((h) => h.rule
  * Negatives are close to the positive on purpose, so a rule that widens by accident fails here.
  */
 const CASES = [
-  ["reversal", ["It's not a caching problem, it's a timeout.", "This isn't about speed; it's about cost.", "The fix is not just faster, but cheaper."], ["The cache is not warm on the first request, so the first call takes 900 ms.", "The test covers not only the parser."]],
+  ["reversal", ["It is not about speed; it is about trust.", "It's not a caching problem, it's a timeout.", "This isn't about speed; it's about cost.", "The fix is not just faster, but cheaper."], ["The cache is not warm on the first request, so the first call takes 900 ms.", "The test covers not only the parser."]],
   ["colon-setup", ["Here's the thing: the cache was cold.", "The catch: it only works once."], ["The result was a 12% drop in latency."]],
   ["grand-opener", ["In today's fast-moving world, teams ship daily.", "In the world of databases, indexes matter."], ["Today the job ran in 4 minutes."]],
   ["announcing", ["In this post, we'll measure the cache.", "Without further ado, the numbers."], ["This post measures the cache hit rate over 30 days."]],
@@ -60,6 +60,25 @@ const CASES = [
   ["staccato", ["It failed. We retried. It passed."], ["It failed on the first run. We retried it after 5 minutes. It passed on the second attempt.", "- Fast.\n- Cheap.\n- Safe."]],
   ["vague", ["Caching significantly reduces latency."], ["Caching reduces latency significantly, from 90 ms to 40 ms."]],
   ["mic-drop", ["The cache cut p95 latency from 90 ms to 40 ms over 30 days. We kept it on for every service after that review. And it works."], ["The cache cut p95 latency from 90 ms to 40 ms over 30 days. We kept it on for every service after that review. It held at 40 ms for 30 days.", "The cache cut p95 latency from 90 ms to 40 ms. We kept it on for every service. See the table below."]],
+  ["intensifier", ["This is genuinely faster.", "It made a real difference to latency."], ["The real rate is 5%.", "We expected a hit. It was actually a miss."]],
+  ["template", ["This is a big step forward for evals.", "Whether you're a founder or an engineer, this helps."], ["Step 4 runs the scorer.", "The next step reads the queue."]],
+  ["transition", ["The cache is warm. Moreover, the queue is short.", "When it comes to latency, caching helps.", "That said, the cost rose."], ["The cache is warm, and the queue is short.", "He said the cost rose by 4%."]],
+  ["endorsement", ["The paper is worth reading.", "It's worth exploring the docs."], ["The paper reports a 4% gain.", "The trade is worth 40 ms per call."]],
+  ["despite-formula", ["Despite these challenges, the project continues to grow."], ["Despite the retry, the job failed at step 3."]],
+  ["moral-adjective", ["We built honest metrics.", "A responsible pipeline checks every row."], ["The metric counts flagged traces.", "The team was honest about the gap."]],
+  ["stranded-contrast", ["It works. It really works.", "They do. They truly do."], ["It works on Node 22. It fails on Node 18."]],
+  ["hook", ["But wait, there's more.", "Want to know the secret?"], ["Wait 5 minutes before the retry."]],
+  ["launch-opener", ["Meet Atlas, the new scheduler.", "Introducing Atlas!"], ["We met the team in March.", "Atlas schedules jobs every 60 seconds."]],
+  ["fake-casual", ["The new build lowkey rocks.", "Honestly it slaps."], ["The new build takes 40 seconds."]],
+  ["reaction", ["Game-changer? Absolutely.", "Worth it? Definitely!"], ["Is it faster? The table shows 40 ms against 90 ms."]],
+  ["engagement", ["Drop a comment below.", "Let me know in the comments."], ["Comments in the code explain the retry."]],
+  ["sycophancy", ["You're absolutely right, the cache is cold.", "Great point about the queue."], ["The point at 5% is marked on the chart."]],
+  ["inflated-cluster", ["Our comprehensive and innovative approach helps."], ["The comprehensive test suite has 79 tests."]],
+  ["inflated-density", ["We ensure various significant gains across numerous jobs."], ["The API key is stored in the vault, and the key is read once per key rotation."]],
+  ["stacked-questions", ["Is the cache warm? Is the queue short? We checked both."], ["Is the cache warm? The hit rate says yes, at 95%."]],
+  ["wall-of-text", ["The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts. The job reads a batch of traces and writes counts."], ["The job reads a batch of traces and writes counts."]],
+  ["uniform-paragraphs", [Array(5).fill("The job reads one batch of traces and writes the counts to a table before the next run starts. The job reads one batch of traces and writes the counts to a table before the next run starts. The job reads one batch of traces and writes the counts to a table before the next run starts.").join("\n\n")], [["The job reads one batch of traces and writes the counts to a table before the next run starts. The job reads one batch of traces and writes the counts to a table before the next run starts. The job reads one batch of traces and writes the counts to a table before the next run starts.", "Short one.", "The job reads one batch of traces and writes the counts to a table before the next run starts. The job reads one batch of traces and writes the counts to a table before the next run starts. The job reads one batch of traces and writes the counts to a table before the next run starts.", "Short two.", "The job reads one batch of traces and writes the counts to a table before the next run starts. The job reads one batch of traces and writes the counts to a table before the next run starts. The job reads one batch of traces and writes the counts to a table before the next run starts."].join("\n\n")]],
+  ["hashtags", ["New release out today #ai #evals #llm"], ["See section #3 for details.", "## Methods"]],
 ];
 
 describe("each rule fires on its pattern and stays quiet on a near miss", () => {
@@ -191,12 +210,12 @@ describe("command line", () => {
 });
 
 describe("this repository follows its own rules", () => {
-  /** Every Markdown file in the repo, except the deliberately sloppy example. */
+  /** Every Markdown file in the repo, except the deliberately sloppy example and the corpus. */
   const markdown = (d) =>
     readdirSync(d, { withFileTypes: true }).flatMap((e) =>
       e.name.startsWith(".") && e.name !== ".github" ? [] : e.isDirectory() ? markdown(join(d, e.name)) : e.name.endsWith(".md") ? [join(d, e.name)] : [],
     );
-  for (const file of markdown(root).filter((f) => !f.endsWith("sloppy.md"))) {
+  for (const file of markdown(root).filter((f) => !f.endsWith("sloppy.md") && !f.includes(join("tests", "corpus")))) {
     test(`${relative(root, file)} is Clean`, () => {
       assert.deepEqual(analyse(readFileSync(file, "utf8")).hits.map((h) => `${h.label} (line ${h.line}): ${h.sample}`), []);
     });
@@ -229,5 +248,13 @@ describe("review fixes", () => {
     const html = "<article>\n  <h2>Setup</h2>\n  <p>The run took 4 minutes.</p>\n  <p>Here, the cache is\n    <strong>blazing-fast</strong> on reads.</p>\n</article>\n";
     const hit = analyse(html, { html: true }).hits.find((h) => h.rule === "hype");
     assert.equal(hit.line, 5);
+  });
+});
+
+describe("corpus", () => {
+  test("every machine sample gets a Rewrite and every human sample doesn't", async () => {
+    const { evaluate } = await import("../scripts/eval.mjs");
+    const r = evaluate();
+    assert.deepEqual(r.rows.filter((x) => !x.ok).map((x) => `${x.sample}: ${x.hits} hits [${x.rules.join(", ")}]`), []);
   });
 });
