@@ -37,6 +37,21 @@ date, after the instructions for that reason.
 | Conversation so far | 800 | $3.00 |
 | Answer | 300 | $15.00 |
 
+The chart puts those prices together for one request, in the three ways the instructions can be
+billed.
+
+**Caching shrinks only the instructions, so on a hit the answer becomes the largest cost**
+*Cost of one request in cents, by part, for a miss, no caching and a hit*
+
+![Stacked bars: a miss costs 2.94 cents, no caching 2.49 cents and a hit 0.87 cents. The
+conversation (0.24 cents) and the answer (0.45 cents) are the same in all three; only the
+instructions change, from 2.25 to 1.80 to 0.18 cents.](charts/request-cost.svg)
+
+Read each bar left to right: instructions, then conversation, then answer, with the total at the
+end. Each part is its token count times its price from the table above.
+
+*Source: token counts from the request logs; prices from the table above.*
+
 Without caching, a request costs 2.49 cents, and 1.80 cents of that (72%) is the instructions.
 Caching only changes that part. On a hit the instructions cost 0.18 cents and the request 0.87
 cents; on a miss they cost 2.25 cents and the request 2.94 cents. With 92% hits the average request
@@ -47,7 +62,20 @@ saving would have to come from shorter answers or a cheaper model, which this pa
 
 ## How the saving changes over the day
 
-The store empties after 5 minutes without a request, so the hit rate follows traffic.
+The store empties after 5 minutes without a request, so the hit rate follows traffic. Splitting
+the month's requests at 08:00 and 20:00 shows how much that matters.
+
+**Caching saved 63% on daytime requests and 42% at night**
+*Saving on the average request against no caching, by time of day, with requests and hit rate*
+
+![Horizontal bars, highest first: 08:00 to 20:00 saves 63% (32,960 requests, 97% hits), the whole
+month 58% (41,200 requests, 92% hits), and 20:00 to 08:00 42% (8,240 requests, 72%
+hits).](charts/saving-by-time.svg)
+
+Each bar is one minus the period's average cost over the 2.49 cents a request costs without
+caching. The whole month is highlighted because it is the figure in the opening.
+
+*Source: the assistant's request logs, 30 days.*
 
 | Period | Requests | Hit rate | Average cost per request | Saving against no caching |
 | --- | --- | --- | --- | --- |
@@ -61,8 +89,11 @@ less than without caching, because the hit rate stays well above the break-even 
 
 ## When caching stops paying
 
-A hit saves 1.62 cents and a miss costs 0.45 cents extra, both against no caching. Caching comes
-out ahead when the hit rate is above 0.45 / (0.45 + 1.62), which is 21.7%.
+A hit saves 1.62 cents against no caching (2.49 − 0.87), and a miss costs 0.45 cents more
+(2.94 − 2.49). In 100 requests with h hits, the hits save 1.62 × h cents and the misses cost
+0.45 × (100 − h) cents. The two are equal when h is 100 × 0.45 / (0.45 + 1.62), which is 21.7.
+So caching costs less than not caching whenever more than 21.7% of requests are hits. The lowest
+measured hit rate, 72% at night, is 3.3 times that.
 
 Two things push the hit rate down. Quiet periods are the first, as the night row shows. Changes to
 the instructions are the second: each change empties the cache once, and the next request pays for

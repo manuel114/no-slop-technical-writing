@@ -7,6 +7,23 @@ latest entry.
 
 ## [Unreleased]
 
+### Added
+
+- `references/charts.md` says which form the evidence for each kind of finding takes: a chart for
+  a comparison or a change over time in collected data, a table for reference data, prose for a
+  worked calculation or a forecast, quotes for interviews, a diagram for structure. The rule is
+  sourced from eight a16z AI research notes. `SKILL.md` points to it, and its outline step now asks
+  for the form of each finding's evidence.
+- Chart rules for a source line under every chart, labelled events and trend lines, and SVG charts
+  drawn from code for Markdown pages.
+- `examples/clean.md` has two charts, drawn by `examples/charts/make-charts.mjs`: the cost of a
+  request by part, and the saving by time of day. The break-even hit rate is worked out in prose.
+
+### Changed
+
+- A chart's finding can be stated in its title or in the heading or sentence just above it, with
+  the title then saying what is measured.
+
 ### Fixed
 
 - Line numbers in the report now match the source after front matter, fenced code and `check:off`

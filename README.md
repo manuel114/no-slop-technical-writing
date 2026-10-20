@@ -33,7 +33,7 @@ It works in Claude Code, Cursor and OpenAI Codex, and in other agents that read 
 ## Before and after
 
 The opening of the same article about prompt caching, first in a deliberately sloppy version, then
-written to the skill's rules. The full articles, about 600 and 850 words, are in
+written to the skill's rules. The full articles, including the clean one's two charts, are in
 [examples/](examples/).
 
 <!-- check:off -->
@@ -170,7 +170,7 @@ rates and the range they could plausibly fall in.
 | [SKILL.md](SKILL.md) | The rules: structure, voice, numbers, process |
 | [references/avoid.md](references/avoid.md) | Patterns to avoid, each with an example and the fix |
 | [references/replicate.md](references/replicate.md) | Research-note patterns to copy, with the published pieces they come from |
-| [references/charts.md](references/charts.md) | Chart rules |
+| [references/charts.md](references/charts.md) | When a finding gets a chart, and how to draw it |
 | [references/review.md](references/review.md) | The review pass |
 | [scripts/check.mjs](scripts/check.mjs) | The check script |
 | [templates/page.html](templates/page.html) | The HTML page shell |
