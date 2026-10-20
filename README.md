@@ -23,7 +23,7 @@ benchmark report. It does two things.
 
 1. **It writes the piece.** The result comes first, every number is computed in code, and the
    sentences are plain.
-2. **It checks the piece.** A check script checks for 40 of the 68 patterns in the skill's catalogue of
+2. **It checks the piece.** The check script looks for 40 of the 68 patterns in the skill's catalogue of
    machine-written text, such as `It's not X, it's Y` or `Let's dive in`. The agent then rereads the
    piece against the whole catalogue; for a long or high-stakes piece, a separate agent does the read.
 
