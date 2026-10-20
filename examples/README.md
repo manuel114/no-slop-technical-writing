@@ -10,6 +10,9 @@ split, the break-even hit rate) is computed from its tables.
 | [sloppy.md](sloppy.md) | The write-up without the skill's rules | 30 hits, Rewrite |
 | [clean.md](clean.md) | The same content written to the skill's rules | 0 hits, Clean |
 
+The clean version's two charts are SVG files in [charts/](charts/), drawn from the same prices and
+token counts by `node examples/charts/make-charts.mjs`, so a chart can't disagree with the text.
+
 The sloppy version is the only Markdown file in the repository that is meant to fail the check, so
 the tests leave it out of the self-check and assert instead that it reads as machine-written.
 

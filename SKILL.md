@@ -42,6 +42,10 @@ which uses [scripts/check.mjs](scripts/check.mjs). For a standalone HTML page, s
 - **One idea per section, one idea per paragraph.** A section with evidence runs: setup, then the
   evidence (a chart, a table, a measurement), then the finding in one sentence, then what it means
   for the reader.
+- **Pick the evidence by the kind of finding.** A comparison or a change over time in data you
+  collected is a chart, with its numbers as a table. Reference data is a table, a worked
+  calculation or a forecast is prose, and a system's structure is a diagram. The full list and
+  where it comes from are in [references/charts.md](references/charts.md).
 - **Say where it stops being true.** Name the shortcuts and limits on purpose. For each: what you
   do, what it risks (with a number), why you accept it (usually time or money, with a number), and
   what limits the damage. State each trade-off once, calmly, without arguing with critics.
@@ -85,7 +89,8 @@ which uses [scripts/check.mjs](scripts/check.mjs). For a standalone HTML page, s
 ## Process
 
 1. **Gather** the sources and every number you'll need, with where each comes from.
-2. **Outline first.** Write the claim sentence, the sections, one line per chart (its finding)
+2. **Outline first.** Write the claim sentence, the sections, one line per finding with the form
+   its evidence takes (chart, table, prose, quotes or diagram)
    and the list of shortcuts. Share it before building anything long; the shortcuts are trade-offs
    the owner has chosen, so confirm them rather than invent them.
 3. **Draft**, computing every number in code.
