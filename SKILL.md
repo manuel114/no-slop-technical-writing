@@ -48,7 +48,8 @@ which uses [scripts/check.mjs](scripts/check.mjs). For a standalone HTML page, s
 - **End on the content.** No "What comes next", "How to use this", recap or closing question,
   unless the reader needs a procedure or someone asked for one. A short methods note (methods by name, assumptions) is fine.
 - **Write steps as short paragraphs** ("First…", "Second…", for however many steps there are)
-  when each needs a sentence of reasoning. Use a list only for parallel, one-line items.
+  when each needs a sentence of reasoning. Use a list only for parallel, one-line items, and bold
+  labels with a short paragraph each for criteria compared side by side.
 
 ## Voice
 
@@ -77,6 +78,8 @@ which uses [scripts/check.mjs](scripts/check.mjs). For a standalone HTML page, s
 - **Compute every number.** Every number in the text comes from code you ran. Re-run it after
   every edit that touches a number.
 - **Text matches tables and charts**, rounded the same way.
+- **Ranges and dates.** Give a range when the inputs vary, and an "as of" date on anything that
+  changes (prices, costs, timings).
 - Prefer a measured value to an estimate, and say how it was measured.
 
 ## Process

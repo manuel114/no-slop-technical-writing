@@ -41,8 +41,9 @@ Read against every entry in [avoid.md](avoid.md), and especially the ones no scr
 - **Term drift**, **mixed estimates** (true, observed, proven), **unlabelled worst cases**,
   **history** and **defending**.
 
-Then check it against [replicate.md](replicate.md): claim first, headings that say what the section
-finds, prose not bullets, the sentence after each chart interpreting rather than describing.
+Then check it against [replicate.md](replicate.md): the claim first, a line on what the page rests
+on, the skim test (headings and bold alone tell the story), reasoning in prose, the sentence after
+each chart saying what it means, and rough estimates followed by what they leave out.
 
 Report each hit as three things: **the quoted phrase**, **which pattern it is**, and **the plain
 rewrite**. One hit is forgivable; **three or more means the piece reads as machine-written and is

@@ -61,7 +61,8 @@ reaches for the same few constructions, and fills gaps with detail that isn't re
 - **Bold everywhere (check).** Fix: bold the main claim and at most one or two key findings.
 - **Em dashes (check)**, where house style bans them. Fix: commas, colons or parentheses.
 - **Bullet lists for reasoning.** Bullets strip out the "because" between points. Fix: short
-  paragraphs; keep bullets for parallel, one-line items.
+  paragraphs; keep bullets for parallel, one-line items, and use bold labels with a paragraph each
+  for criteria compared side by side.
 - **Headings as slogans.** "One round, three numbers", "The magic number". Fix: say what the
   section covers or finds.
 - **Emoji, decorative symbols and title-case everywhere** in body prose. Fix: remove.
@@ -89,7 +90,8 @@ reaches for the same few constructions, and fills gaps with detail that isn't re
   clause saying what it means.
 - **Vague thresholds.** "fails by a little", "a small sample". Fix: the number.
 - **History in place of the present.** "This was 70% until October", "why not 30". Fix: describe
-  how it is.
+  how it is. Comparing measurements over time ("the rate fell from 55% to 28% after the fix") is
+  evidence, not history, and stays.
 - **Unlabelled worst cases.** A ceiling presented as the expected result, which scares readers for
   no reason. Fix: call it a ceiling, say why real results land below, and what corrects it.
 - **Defending.** Paragraphs that argue with an imagined critic. Fix: state the trade-off once,

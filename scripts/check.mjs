@@ -61,7 +61,7 @@ const fromHtml = (html) =>
 
 /** Drop front matter, fenced code, inline code and check:off regions, which aren't prose to judge. */
 const proseOnly = (md) =>
-  md.replace(/<!--\s*check:off\s*-->[\s\S]*?(?:<!--\s*check:on\s*-->|$)/g, "").replace(/^---\n[\s\S]*?\n---\n/, "").replace(/```[\s\S]*?```/g, "").replace(/`[^`\n]*`/g, "");
+  md.replace(/<!--\s*check:off\s*-->[\s\S]*?(?:<!--\s*check:on\s*-->|$)/g, "").replace(/^---\n[\s\S]*?\n---\n/, "").replace(/```[\s\S]*?```/g, "").replace(/`[^`\n]*`/g, "").replace(/\]\([^)\s]*\)/g, "]").replace(/https?:\/\/\S+/g, "");
 
 /** Split a paragraph into sentences. */
 const sentences = (p) => p.replace(/\s+/g, " ").trim().split(/(?<=[.!?])\s+(?=[A-Z0-9"(])/).filter(Boolean);
