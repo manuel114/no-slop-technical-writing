@@ -1,33 +1,23 @@
-# Supercharging Our CI: 5 Lessons From Our Caching Journey 🚀
+# Prompt Caching: A Game-Changer for LLM Costs 🚀
 
-In today's fast-paced world of software delivery, CI pipelines play a crucial role in how teams
-ship. In this post, we'll walk through how we unlocked dramatically faster builds. Let's dive in.
+In the rapidly evolving landscape of LLM applications, cost has become a crucial concern. We
+recently rolled out prompt caching for our support assistant — and the results were nothing short
+of transformative.
 
-It's not just about speed, it's about developer happiness. Slow builds don't just waste minutes;
-they break focus — and focus is the new currency. Studies show that context switching is costly.
+It's not just about saving money, it's about unlocking the ability to scale. Cheaper prompts.
+Faster answers. Happier users.
 
-## The Problem
+## The Results
 
-Here's the thing: our builds were slow. Really slow. Painfully slow.
+Here's the thing: our costs dropped significantly. The data tells us that caching works,
+highlighting the importance of reusing prompts across requests. Studies show that most teams
+overpay for tokens without realizing it.
 
-The data told us what we needed to know. Builds were taking significantly longer than they should,
-highlighting the need for a robust, seamless caching layer that serves as the backbone of our
-pipeline.
+## Why This Matters
 
-## The Solution
+So what does this mean for you? Caching serves as a powerful lever for any team building with
+LLMs, and it may potentially cut your bill in half. Of course, there are trade-offs to consider,
+but the benefits are clear.
 
-We decided to leverage a dependency cache. The results were nothing short of transformative:
-build times dropped massively, underscoring the pivotal role caching plays in modern CI. It's
-worth noting that this may potentially work for your team too.
-
-The cache restores dependencies. The cache saves time. The cache keeps developers happy.
-
-## What This Means
-
-So what does this mean for you? Caching isn't just a nice-to-have; it's a must-have. Most teams
-get this wrong, but with the right approach, the possibilities are endless.
-
-In conclusion, caching transforms the way teams think about CI. The future is bright. And it all
-starts with one small change.
-
-I hope this helps! Let me know if you have any questions.
+In conclusion, prompt caching is a must-have for any serious AI team. The future is bright. Start
+caching today!

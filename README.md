@@ -2,8 +2,8 @@
 
 # no-slop-technical-writing
 
-An agent skill for technical writing that reads like a data-led research note: the claim first, every
-number computed, and a check script that flags machine-written patterns.
+An agent skill for technical writing that reads like a data-led research note, with a check script
+that flags machine-written patterns.
 
 [![test](https://github.com/manuel114/no-slop-technical-writing/actions/workflows/test.yml/badge.svg)](https://github.com/manuel114/no-slop-technical-writing/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -12,74 +12,73 @@ number computed, and a check script that flags machine-written patterns.
 [![Version 0.1.0](https://img.shields.io/badge/version-0.1.0-informational)](CHANGELOG.md)
 [![X @manuel_mch](https://img.shields.io/badge/X-@manuel__mch-black?logo=x&logoColor=white)](https://x.com/manuel_mch)
 
-<img src="docs/demo.gif" alt="The check script reports 39 hits on a sloppy write-up, then 0 hits on a clean version of the same write-up" width="780">
+<img src="docs/demo.gif" alt="The check script reports 21 hits on a sloppy write-up, then 0 hits on a clean version of the same write-up" width="780">
 
 </div>
 
 ---
 
-Give this skill to your coding agent when you need a technical write-up: a design doc, a benchmark
-report, or an explanation of how something works. It does two things.
+Give this skill to your coding agent when you need a technical write-up, such as a design doc or a
+benchmark report. It does two things.
 
-1. **It writes the piece.** The result comes first, every number comes from a real calculation, and
-   the sentences are plain.
-2. **It checks the piece.** A script flags 40 common signs of machine-written text, such as
-   `It's not X, it's Y` or `Let's dive in`. The agent then rereads the piece for the signs a script
-   can't catch.
+1. **It writes the piece.** The result comes first, every number is computed in code, and the
+   sentences are plain.
+2. **It checks the piece.** The check script looks for 40 of the 68 patterns in the skill's catalogue of
+   machine-written text, such as `It's not X, it's Y` or `Let's dive in`. The agent then rereads the
+   piece against the whole catalogue; for a long or high-stakes piece, a separate agent does the read.
 
-It works in Claude Code, Cursor, OpenAI Codex and any other agent that reads the
+It works in Claude Code, Cursor and OpenAI Codex, and in other agents that read the
 [Agent Skills](https://agentskills.io) format.
 
 ## Before and after
 
-The same CI caching write-up, first as an agent tends to produce it, then after the skill.
-Both are in [examples/](examples/).
+The same write-up about prompt caching, first in a deliberately sloppy version, then written to the
+skill's rules. Both are in [examples/](examples/).
 
 <!-- check:off -->
 
 > **Before** ([examples/sloppy.md](examples/sloppy.md))
 >
-> In today's fast-paced world of software delivery, CI pipelines play a crucial role in how teams
-> ship. In this post, we'll walk through how we unlocked dramatically faster builds. Let's dive in.
+> In the rapidly evolving landscape of LLM applications, cost has become a crucial concern. We
+> recently rolled out prompt caching for our support assistant — and the results were nothing short
+> of transformative.
 >
-> It's not just about speed, it's about developer happiness. Slow builds don't just waste minutes;
-> they break focus — and focus is the new currency. Studies show that context switching is costly.
+> It's not just about saving money, it's about unlocking the ability to scale. Cheaper prompts.
+> Faster answers. Happier users.
 
 <!-- check:on -->
 
 > **After** ([examples/clean.md](examples/clean.md))
 >
-> A dependency cache made the average CI build 3.3 minutes shorter over 30 days: 5.8 minutes
-> across 412 builds with the cache, against 9.1 minutes across 398 builds in the 30 days before.
-> That is 22.8 hours of runner time a month, about $11 at $0.008 a runner-minute. The cache pays
-> for itself whenever more than 11% of builds find it warm; this trial saw 87%.
+> A support assistant sends the same 6,000-token instructions with every request. Prompt caching
+> (the provider keeps that repeated part and charges a tenth of the normal price to reuse it)
+> brought the average request from 2.5 cents to 1.0 cent over 30 days, or from $1,026 to $427 for
+> the month. **Caching saves money as long as more than 22% of requests find the cache warm; here
+> 92% did.**
 
-The check script finds 12 hits in the first version's six sentences, and none in the second. The
-second also leads with the result, says what it rests on, and gives the condition under which it
-stops being true, which no script checks.
+The check script finds 8 hits in the first version's six sentences and none in the second. The
+first never says how much was saved. The second gives the saving with its numbers, explains
+the one term a reader may not know, and says when caching stops paying.
 
 ## What the check script reports
 
 [`scripts/check.mjs`](scripts/check.mjs) reads a Markdown or HTML file and lists every hit with its
-line. On the full sloppy example it reports 39 hits (first lines shown):
+line. On the full sloppy example it reports 21 hits (first lines shown):
 
 ```text
 $ node scripts/check.mjs examples/sloppy.md
-examples/sloppy.md: 39 hits. Rewrite: 3 or more hits reads as machine-written.
+examples/sloppy.md: 21 hits. Rewrite: 3 or more hits reads as machine-written.
 
-Reversal (it's not X, it's Y) (2)
-  line 6: It's not just about speed, it's
-  line 27: isn't just a nice-to-have; it's
+Reversal (it's not X, it's Y) (1)
+  line 7: It's not just about saving money, it's
 
 Colon set-up (1)
-  line 11: Here's the thing:
+  line 12: Here's the thing:
 
-Grand opener (1)
-  line 3: In today's
+Tacked-on -ing clause (1)
+  line 12: , highlighting
 
-Tacked-on -ing clause (2)
-  line 13: , highlighting
-  line 20: , underscoring
+False agency (1)
 ...
 ```
 
@@ -105,8 +104,8 @@ already. The script needs Node.js 22 or later and has no dependencies.
 ## Install
 
 The skill is the whole folder: `SKILL.md` loads files from `references/`, `scripts/` and
-`templates/`, so copy all of it. Some agents require the folder name to match the `name` in
-`SKILL.md`, which is `no-slop-technical-writing`.
+`templates/`, so copy all of it. The Agent Skills format requires the folder name to match the
+`name` in `SKILL.md`, which is `no-slop-technical-writing`.
 
 ### Claude Code
 
@@ -144,7 +143,7 @@ git clone https://github.com/manuel114/no-slop-technical-writing ~/.agents/skill
 Any agent that reads `SKILL.md` folders takes the same folder; put it wherever that agent looks for
 skills. For a tool without skill support, add the contents of `SKILL.md` to its instructions file
 and keep the rest of the folder next to it, so the links to `references/` resolve. The check script
-runs on its own anywhere Node.js 22 is installed:
+runs on its own anywhere Node.js 22 or later is installed:
 
 ```bash
 node path/to/no-slop-technical-writing/scripts/check.mjs draft.md
@@ -155,14 +154,13 @@ To fail a CI job on a sloppy document, run it with `--strict`.
 ## Using it
 
 Ask for the kind of piece the skill covers, for example "write up the benchmark results as a
-research note", "explain how the retry budget works", or "de-slop this design doc". The agent
-outlines first, drafts with every number computed, then runs the review in
-[references/review.md](references/review.md): the check script, then a read against the
-catalogue by a reader whose only job is to find slop.
+research note" or "check this design doc for machine-written patterns". The agent outlines first,
+drafts with every number computed, then runs the review in
+[references/review.md](references/review.md).
 
 For a standalone page, [templates/page.html](templates/page.html) is a single-file HTML research
-note with light and dark themes, line and bar chart helpers with data tables, and binomial
-statistics helpers.
+note with light and dark themes, line and bar chart helpers with data tables, and helpers for pass
+rates and the range they could plausibly fall in.
 
 ## What's in the repository
 
@@ -187,16 +185,17 @@ Run them from the skill's own folder:
 node --test
 ```
 
-Each check has a case that must fire it and a near miss that must not. Further cases cover the
-places a pattern checker tends to misfire: tables, lists, URLs, code, front matter, decimals,
+Each rule has a case that must fire it and a near miss that must not. Further cases cover the
+places a check script can misfire: tables, lists, URLs, code, front matter, decimals,
 `check:off` regions, and statistics terms such as "true recall" or "the real rate". The suite
-also runs the checker on every Markdown file in this repository, except the sloppy example, and
+also runs the check script on every Markdown file in this repository, except the sloppy example, and
 fails if any is not Clean. CI runs it on Node.js 22 and 24.
 
 ## House style
 
-The rules are defaults. A project can add its own (banned words, required terms, a ban on em
-dashes) in a small skill of its own that loads this one first. See
+The rules are defaults. A project can add its own, such as banned words or required terms, in its
+own instructions; where those are stricter, they win. Where a project's style allows em dashes, run
+the check script with `--allow-em-dash`. See
 [CONTRIBUTING.md](CONTRIBUTING.md) to report a false alarm or propose a pattern.
 
 ## License

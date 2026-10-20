@@ -1,12 +1,13 @@
 # Examples
 
-Two versions of the same short write-up about adding a dependency cache to a CI pipeline. The
-repository, the build counts and the timings are made up for the example; every derived number in
-the clean version (the means, the savings, the break-even hit rate) is computed from its table.
+Two versions of the same short write-up about prompt caching for a support assistant built on a
+language model. The assistant, its traffic and the prices are made up for the example; every
+derived number in the clean version (the cost per request, the monthly totals, the break-even hit
+rate) is computed from its table.
 
 | File | What it shows | Check script result |
 | --- | --- | --- |
-| [sloppy.md](sloppy.md) | The write-up as an agent tends to produce it without the skill | 39 hits, Rewrite |
+| [sloppy.md](sloppy.md) | The write-up without the skill's rules | 21 hits, Rewrite |
 | [clean.md](clean.md) | The same content written to the skill's rules | 0 hits, Clean |
 
 The sloppy version is the only Markdown file in the repository that is meant to fail the check, so
