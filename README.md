@@ -12,7 +12,7 @@ number computed, and a check script that flags machine-written patterns.
 [![Version 0.1.0](https://img.shields.io/badge/version-0.1.0-informational)](CHANGELOG.md)
 [![X @manuel_mch](https://img.shields.io/badge/X-@manuel__mch-black?logo=x&logoColor=white)](https://x.com/manuel_mch)
 
-<img src="docs/demo.gif" alt="The check script reports 39 hits on a sloppy write-up, then 0 hits on a clean version of the same write-up" width="780">
+<img src="docs/demo.gif" alt="The check script reports 21 hits on a sloppy write-up, then 0 hits on a clean version of the same write-up" width="780">
 
 </div>
 
@@ -32,54 +32,53 @@ It works in Claude Code, Cursor, OpenAI Codex and any other agent that reads the
 
 ## Before and after
 
-The same CI caching write-up, first as an agent tends to produce it, then after the skill.
+The same write-up about prompt caching, first as an agent tends to produce it, then with the skill.
 Both are in [examples/](examples/).
 
 <!-- check:off -->
 
 > **Before** ([examples/sloppy.md](examples/sloppy.md))
 >
-> In today's fast-paced world of software delivery, CI pipelines play a crucial role in how teams
-> ship. In this post, we'll walk through how we unlocked dramatically faster builds. Let's dive in.
+> In the rapidly evolving landscape of LLM applications, cost has become a crucial concern. We
+> recently rolled out prompt caching for our support assistant — and the results were nothing short
+> of transformative.
 >
-> It's not just about speed, it's about developer happiness. Slow builds don't just waste minutes;
-> they break focus — and focus is the new currency. Studies show that context switching is costly.
+> It's not just about saving money, it's about unlocking the ability to scale. Cheaper prompts.
+> Faster answers. Happier users.
 
 <!-- check:on -->
 
 > **After** ([examples/clean.md](examples/clean.md))
 >
-> A dependency cache made the average CI build 3.3 minutes shorter over 30 days: 5.8 minutes
-> across 412 builds with the cache, against 9.1 minutes across 398 builds in the 30 days before.
-> That is 22.8 hours of runner time a month, about $11 at $0.008 a runner-minute. The cache pays
-> for itself whenever more than 11% of builds find it warm; this trial saw 87%.
+> A support assistant sends the same 6,000-token instructions with every request. Prompt caching
+> (the provider keeps that repeated part and charges a tenth of the normal price to reuse it)
+> brought the average request from 2.5 cents to 1.0 cent over 30 days, or from $1,026 to $427 for
+> the month. **Caching saves money as long as more than 22% of requests find the cache warm; here
+> 92% did.**
 
-The check script finds 12 hits in the first version's six sentences, and none in the second. The
-second also leads with the result, says what it rests on, and gives the condition under which it
-stops being true, which no script checks.
+The check script finds 8 hits in the first version's six sentences and none in the second. The
+first never says how much was saved. The second gives the saving with its numbers, explains
+the one term a reader may not know, and says when caching stops paying.
 
 ## What the check script reports
 
 [`scripts/check.mjs`](scripts/check.mjs) reads a Markdown or HTML file and lists every hit with its
-line. On the full sloppy example it reports 39 hits (first lines shown):
+line. On the full sloppy example it reports 21 hits (first lines shown):
 
 ```text
 $ node scripts/check.mjs examples/sloppy.md
-examples/sloppy.md: 39 hits. Rewrite: 3 or more hits reads as machine-written.
+examples/sloppy.md: 21 hits. Rewrite: 3 or more hits reads as machine-written.
 
-Reversal (it's not X, it's Y) (2)
-  line 6: It's not just about speed, it's
-  line 27: isn't just a nice-to-have; it's
+Reversal (it's not X, it's Y) (1)
+  line 7: It's not just about saving money, it's
 
 Colon set-up (1)
-  line 11: Here's the thing:
+  line 12: Here's the thing:
 
-Grand opener (1)
-  line 3: In today's
+Tacked-on -ing clause (1)
+  line 12: , highlighting
 
-Tacked-on -ing clause (2)
-  line 13: , highlighting
-  line 20: , underscoring
+False agency (1)
 ...
 ```
 
