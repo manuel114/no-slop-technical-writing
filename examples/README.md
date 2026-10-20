@@ -1,13 +1,13 @@
 # Examples
 
-Two versions of the same short write-up about prompt caching for a support assistant built on a
+Two versions of the same article about prompt caching for a support assistant built on a
 language model. The assistant, its traffic and the prices are made up for the example; every
-derived number in the clean version (the cost per request, the monthly totals, the break-even hit
-rate) is computed from its table.
+derived number in the clean version (the cost per request, the monthly totals, the day and night
+split, the break-even hit rate) is computed from its tables.
 
 | File | What it shows | Check script result |
 | --- | --- | --- |
-| [sloppy.md](sloppy.md) | The write-up without the skill's rules | 21 hits, Rewrite |
+| [sloppy.md](sloppy.md) | The write-up without the skill's rules | 30 hits, Rewrite |
 | [clean.md](clean.md) | The same content written to the skill's rules | 0 hits, Clean |
 
 The sloppy version is the only Markdown file in the repository that is meant to fail the check, so
