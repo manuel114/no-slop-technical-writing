@@ -33,3 +33,5 @@ First shareable version, named `no-slop-technical-writing`. Earlier private draf
 
 - The bold limit no longer counts bold that labels a list item.
 - Hit samples print on one line.
+- `templates/page.html` has a viewport meta tag, so phones get the mobile layout, and its sample
+  table lists every plotted point, so no value is visible only on hover.
