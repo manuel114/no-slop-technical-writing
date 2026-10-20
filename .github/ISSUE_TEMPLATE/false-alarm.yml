@@ -1,0 +1,31 @@
+name: False alarm or missed pattern
+description: The check script flags text that is fine, or misses text that reads as machine-written.
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - False alarm (flags text that is fine)
+        - Missed pattern (should flag, doesn't)
+    validations:
+      required: true
+  - type: textarea
+    id: text
+    attributes:
+      label: The text
+      description: One or two sentences that show the problem on their own.
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: What the check script printed
+      render: text
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and why
+    validations:
+      required: true

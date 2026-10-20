@@ -16,7 +16,7 @@ node scripts/check.mjs page.html --max-bold 3
 node scripts/check.mjs file.md --json --strict
 ```
 
-Options: `--max-bold N` (default 3), `--allow-em-dash` where house style permits them, `--json`
+Options: `--max-bold N` (default 3; bold that labels a list item doesn't count), `--allow-em-dash` where house style permits them, `--json`
 for a machine-readable report, and `--strict` to exit 1 at three or more hits (for CI).
 
 It prints each hit with its line, a verdict (Clean / Review the hits / Rewrite), and a separate
@@ -35,19 +35,19 @@ Read against every entry in [avoid.md](avoid.md), and especially the ones no scr
 - **Performing every sentence**: a steady beat of punchlines where most sentences should just
   carry a fact.
 - **Groups of three** chosen for rhythm.
-- **Invented detail** and **claims with no receipt**: each number traced to a measurement, a
+- **Invented detail** and claims with no receipt: each number traced to a measurement, a
   source, or a calculation on the page.
-- **Rules that don't exist** and **assumptions about others**.
-- **Term drift**, **mixed estimates** (true, observed, proven), **unlabelled worst cases**,
-  **history** and **defending**.
+- **Rules that don't exist** and assumptions about others.
+- **Term drift**, mixed estimates (true, observed, proven), unlabelled worst cases,
+  history and defending.
 
 Then check it against [replicate.md](replicate.md): the claim first, a line on what the page rests
 on, the skim test (headings and bold alone tell the story), reasoning in prose, the sentence after
 each chart saying what it means, and rough estimates followed by what they leave out.
 
-Report each hit as three things: **the quoted phrase**, **which pattern it is**, and **the plain
-rewrite**. One hit is forgivable; **three or more means the piece reads as machine-written and is
-rewritten** before it ships.
+Report each hit as three things: the quoted phrase, which pattern it is, and the plain rewrite. One
+hit is forgivable; **three or more means the piece reads as machine-written** and is rewritten
+before it ships.
 
 ## The fix
 
