@@ -37,6 +37,12 @@ node --test
 
 Node.js 22 or later, no install step.
 
+## The demo GIF
+
+`docs/demo.gif` shows the check script's real output on the two examples. After changing the
+script's output or the examples, render it again from the repository root with
+`python3 docs/make-demo.py` (needs Pillow).
+
 ## Releasing
 
 Add the changes under Unreleased in `CHANGELOG.md` as you go. To release, move them under a new

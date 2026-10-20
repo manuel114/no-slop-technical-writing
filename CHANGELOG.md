@@ -26,9 +26,12 @@ First shareable version, named `no-slop-technical-writing`. Earlier private draf
 - `examples/` with a sloppy and a clean version of the same write-up.
 - `tests/check.test.mjs`, run with `node --test`, and a CI workflow that runs it on Node.js 22 and
   24.
-- README with install steps for Claude Code, Cursor, OpenAI Codex and other agents.
+- README with install steps for Claude Code, Cursor, OpenAI Codex and other agents, and a demo
+  GIF rendered from the check script's real output by `docs/make-demo.py`.
 
 ### Changed
 
 - The bold limit no longer counts bold that labels a list item.
 - Hit samples print on one line.
+- `templates/page.html` has a viewport meta tag, so phones get the mobile layout, and its sample
+  table lists every plotted point, so no value is visible only on hover.
