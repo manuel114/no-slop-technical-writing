@@ -9,10 +9,10 @@ chart means.
 
 ## The opening
 
-1. **Diagnose.** The first paragraph names the real problem, often one the reader has framed
-   wrong, and makes it specific. For example: "Most teams judge an evaluator by what it scored on
-   one test set. But that score moves from one set to the next, so the question that matters is
-   the lowest its recall could plausibly be."
+1. **Diagnose.** The first paragraph names the problem the page is about, often one the reader has
+   framed wrong, and makes it specific. For example: "An evaluator's score on one test set
+   moves from one set to the next, so the score alone can't say whether the evaluator is good
+   enough. What can is the lowest its recall could plausibly be."
 2. **Explain why it's hard.** The second paragraph gives the reason the obvious approach fails,
    with a concrete example.
 3. **Say what the page rests on.** One sentence on where the knowledge comes from: how many
