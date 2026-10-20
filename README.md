@@ -10,10 +10,13 @@ number computed, and a check script that flags machine-written patterns.
 [![Node.js 22+](https://img.shields.io/badge/Node.js-22%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-6f42c1)](https://agentskills.io)
 [![Version 0.1.0](https://img.shields.io/badge/version-0.1.0-informational)](CHANGELOG.md)
+[![X @manuel_mch](https://img.shields.io/badge/X-@manuel__mch-black?logo=x&logoColor=white)](https://x.com/manuel_mch)
 
 <img src="docs/demo.gif" alt="The check script reports 39 hits on a sloppy write-up, then 0 hits on a clean version of the same write-up" width="780">
 
 </div>
+
+---
 
 It is for technical content: how a system or method works, the maths behind a decision, a
 measurement write-up, a design note. Each chart or table carries one finding, and the sentences
