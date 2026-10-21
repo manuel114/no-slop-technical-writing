@@ -52,6 +52,9 @@ shows the difference at a glance, and the table lets the reader check it.
   bar: proven 80%"); the caption explains how it translates to the other bars.
 - **Isolate one effect.** A chart about one quantity holds the others fixed, and the caption says
   what is held fixed ("assumes every real case is caught").
+- **Labels say which quantity they are.** When two charts or a chart and a table use similar
+  numbers, each label names its quantity ("observed recall", "recall needed to pass"), never a bare
+  "30 cases: 93%". The same name never means two different things on one page.
 - **Label what-if axes honestly.** If a line plots a true value nobody can measure, call it
   "true", and say in the caption how to read it against the measured or proven number.
 - **A process is a step diagram, not a chart.**

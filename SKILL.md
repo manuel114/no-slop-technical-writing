@@ -63,6 +63,10 @@ which uses [scripts/check.mjs](scripts/check.mjs). For a standalone HTML page, s
   link statistical terms (power, lower bound, confidence) on first use.
 - **Call things what they are, and the same thing every time.** If it's recall, say recall. Pick
   one word for a concept and keep it. Define a term before using it.
+- **One name, one thing.** Never use the same name or label for two different quantities, even
+  when they share units. A score an evaluator got and the score it needs to pass are different
+  numbers; name them differently ("observed recall" and "recall needed to pass"), in the text, in
+  chart titles, labels and tooltips, and in table headers.
 - **Keep estimates apart.** When a quantity has several forms (true, observed, proven; measured,
   estimated), say which one every time, and use the one the rule is built on.
 - **Specific, never vague.** "misses by a little" needs a number. If the process has no rule for
