@@ -209,6 +209,12 @@ reaches for the same few constructions, and fills gaps with detail that isn't re
 - **Synonym cycling.** Rotating words for the same thing to avoid repeating one ("developers…
   engineers… builders"). Fix: pick the clearest word and repeat it; repetition is fine when it's the
   right word.
+- **One name for two things.** The reverse of synonym cycling: the same word or bare label used for
+  different quantities, so the reader thinks they're the same and finds the numbers don't match.
+  For example, a table of "observed recall" for one evaluator (29 of 30, 96.7%) next to a chart
+  labelled "30 cases: 93%" that means the lowest recall that passes. Fix: give each quantity its own
+  name and use it in every label ("30 cases: must catch 28 (93%)"); a bare number on a chart says
+  what it is.
 - **Mixed estimates.** True, observed and proven (or measured and estimated) used in one sentence
   without saying which. Fix: label each number.
 - **Unexplained names and terms (partly checked).** Any name the reader can't be expected to know,

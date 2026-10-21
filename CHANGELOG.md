@@ -9,6 +9,9 @@ latest entry.
 
 ### Added
 
+- A "one name, one thing" rule: never use the same name or label for two different quantities.
+  It is in `SKILL.md` (Voice), `references/avoid.md` ("One name for two things", the reverse of
+  synonym cycling) and `references/charts.md` (labels say which quantity they are).
 - About 30 more patterns in `references/avoid.md`: stacked rhetorical questions, stranded contrasts,
   missing bridges, hollow intensifiers, template phrases, transition fillers, vague endorsements,
   "despite challenges" formulas, moral adjectives on things, analogy stacking, walls of text,
